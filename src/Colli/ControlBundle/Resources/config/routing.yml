@@ -1,0 +1,3 @@
+colli_control_homepage:
+    path:     /
+    defaults: { _controller: ColliControlBundle:Default:index }
