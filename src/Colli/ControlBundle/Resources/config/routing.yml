@@ -1,3 +1,11 @@
 colli_control_homepage:
     path:     /
     defaults: { _controller: ColliControlBundle:Default:index }
+
+colli_control_canton:
+    path:     /canton
+    defaults: { _controller: ColliControlBundle:Default:canton }
+
+colli_control_sectores:
+    path:     /sector
+    defaults: { _controller: ColliControlBundle:Default:sector }
