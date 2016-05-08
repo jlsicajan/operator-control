@@ -1,20 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database name="default" namespace="Colli\ControlBundle\Model" defaultIdMethod="native">
 
-    <table name="book">
-        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="title" type="varchar" primaryString="1" size="100" />
-        <column name="ISBN" type="varchar" size="20" />
-        <column name="author_id" type="integer" />
-        <foreign-key foreignTable="author">
-            <reference local="author_id" foreign="id" />
-        </foreign-key>
-    </table>
+  <table name="canton">
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="descripcion" type="varchar" required="true" primaryString="1" size="100" />
+  </table>
 
-    <table name="author">
-        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-        <column name="first_name" type="varchar" size="100" />
-        <column name="last_name" type="varchar" size="100" />
-    </table>
+  <table name="sector">
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="descripcion" type="varchar" required="true" size="50" />
+    <column name="ancho" type="integer" required="true" size="11" />
+    <column name="largo" type="integer" required="true" size="11" />
+    <column name="unidad_medida" type="varchar" required="true" size="50" />        
+    <column name="canton_id" type="integer" required="true" size="11" />        
+    <foreign-key foreignTable="canton">
+      <reference local="canton_id" foreign="id" />
+    </foreign-key>
+  </table>
+  
+  <table name="bodega">
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="descripcion" type="varchar" required="true" primaryString="1" size="50" />    
+    <column name="cantidad" type="integer" required="true" size="11" />   
+    <column name="precio" type="integer" required="true" size="11" />   
+  </table>
+  
+  <table name="maquinaria">
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="descripcion" type="varchar" required="true" primaryString="1" size="50" />    
+    <column name="numero" type="integer" required="true" size="11" />   
+  </table>
+  
+  <table name="control_bodega">
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="bodega_id" type="integer" required="false" size="11" />
+    <column name="fecha_retiro" type="timestamp"/>
+    <column name="maquinaria_id" type="integer" required="true" size="11" />
+    <column name="fecha_ingreso" type="timestamp"/>
+    <column name="canton_id" type="integer" required="false" size="11" />
+    <column name="sector_id" type="integer" required="false" size="11" />
+    <foreign-key foreignTable="canton">
+      <reference local="canton_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="sector">
+      <reference local="sector_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="maquinaria">
+      <reference local="maquinaria_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="bodega">
+      <reference local="bodega_id" foreign="id" />
+    </foreign-key>
+  </table>
+  
+  <table name="control">
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />  
+    <column name="canton_id" type="integer" required="true" size="11" />   
+    <column name="sector_id" type="integer" required="true" size="11" />   
+    <column name="cantidad_camionadas_sector" type="varchar" required="true" size="50" />   
+    <column name="precio_diesel_sector" type="varchar" required="true" size="50" />   
+    <column name="galones_diesel_sector" type="varchar" required="true" size="50" />   
+    <column name="dias_cantidad_sector" type="varchar" required="true" size="50" />   
+    <column name="horas_diarias_sector" type="varchar" required="true" size="50" />   
+    <column name="horas_total_sector" type="varchar" required="false" size="50" />   
+    <column name="grosor_balasto_sector" type="varchar" required="false" size="50" />   
+    <column name="repacarion_sector" type="varchar" required="false" size="50" />   
+    <!--if reparacion sector != null then, fill -->
+    <column name="maquinaria_id" type="varchar" required="false" size="50" />   
+    <column name="bodega_id" type="varchar" required="false" size="50" />   
+    <column name="observaciones" type="varchar" required="false" size="50" />   
+    <!--<column name="observacion_id" type="integer" required="false" size="11" />-->   
+    <!-- this -->
+    <foreign-key foreignTable="canton">
+      <reference local="canton_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="sector">
+      <reference local="sector_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="maquinaria">
+      <reference local="maquinaria_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="bodega">
+      <reference local="bodega_id" foreign="id" />
+    </foreign-key>
+  </table>
 
 </database>
