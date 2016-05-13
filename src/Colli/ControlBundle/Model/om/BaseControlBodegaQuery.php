@@ -606,7 +606,7 @@ abstract class BaseControlBodegaQuery extends ModelCriteria
      *
      * @return ControlBodegaQuery The current query, for fluid interface
      */
-    public function joinCanton($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinCanton($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Canton');
@@ -641,7 +641,7 @@ abstract class BaseControlBodegaQuery extends ModelCriteria
      *
      * @return   \Colli\ControlBundle\Model\CantonQuery A secondary query class using the current class as primary query
      */
-    public function useCantonQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useCantonQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinCanton($relationAlias, $joinType)
@@ -682,7 +682,7 @@ abstract class BaseControlBodegaQuery extends ModelCriteria
      *
      * @return ControlBodegaQuery The current query, for fluid interface
      */
-    public function joinSector($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinSector($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Sector');
@@ -717,7 +717,7 @@ abstract class BaseControlBodegaQuery extends ModelCriteria
      *
      * @return   \Colli\ControlBundle\Model\SectorQuery A secondary query class using the current class as primary query
      */
-    public function useSectorQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useSectorQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinSector($relationAlias, $joinType)
@@ -834,7 +834,7 @@ abstract class BaseControlBodegaQuery extends ModelCriteria
      *
      * @return ControlBodegaQuery The current query, for fluid interface
      */
-    public function joinBodega($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinBodega($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
         $relationMap = $tableMap->getRelation('Bodega');
@@ -869,7 +869,7 @@ abstract class BaseControlBodegaQuery extends ModelCriteria
      *
      * @return   \Colli\ControlBundle\Model\BodegaQuery A secondary query class using the current class as primary query
      */
-    public function useBodegaQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useBodegaQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
             ->joinBodega($relationAlias, $joinType)

@@ -430,9 +430,10 @@ abstract class BaseCanton extends BaseObject implements Persistent
 
             if ($this->controlBodegasScheduledForDeletion !== null) {
                 if (!$this->controlBodegasScheduledForDeletion->isEmpty()) {
-                    ControlBodegaQuery::create()
-                        ->filterByPrimaryKeys($this->controlBodegasScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
+                    foreach ($this->controlBodegasScheduledForDeletion as $controlBodega) {
+                        // need to save related object because we set the relation to null
+                        $controlBodega->save($con);
+                    }
                     $this->controlBodegasScheduledForDeletion = null;
                 }
             }
@@ -1406,7 +1407,7 @@ abstract class BaseCanton extends BaseObject implements Persistent
                 $this->controlBodegasScheduledForDeletion = clone $this->collControlBodegas;
                 $this->controlBodegasScheduledForDeletion->clear();
             }
-            $this->controlBodegasScheduledForDeletion[]= clone $controlBodega;
+            $this->controlBodegasScheduledForDeletion[]= $controlBodega;
             $controlBodega->setCanton(null);
         }
 

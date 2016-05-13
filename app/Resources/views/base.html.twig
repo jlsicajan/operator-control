@@ -18,6 +18,7 @@
       <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/material-design-iconic-font.min.css?1421434286')}}" />
       <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/rickshaw/rickshaw.css?1422792967')}}" />
       <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/morris/morris.core.css?1420463396')}}" />
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/dt-1.10.11/datatables.min.css"/>
     {% endblock %}
     <!-- END STYLESHEETS -->
   </head>
@@ -79,15 +80,15 @@
           <div class="section-body">
             <div class="row">
               <!-- BEGIN NEW REGISTRATIONS -->
-              <div class="col-md-3">
-                <div class="card">
-                  <div class="card-body no-padding height-5 scroll">
+              <div>
+                {% block body %}
+                {% endblock %}
+{#                <div class="card">
+                  <div class="card-body no-padding height-9 scroll">
                     <ul class="list divider-full-bleed">
-                      {% block body %}
-                      {% endblock %}
                     </ul>
                   </div><!--end .card-body -->
-                </div><!--end .card -->
+                </div><!--end .card -->#}
               </div><!--end .col -->
               <!-- END NEW REGISTRATIONS -->
 
@@ -481,6 +482,9 @@
     <script src="../../assets/js/core/source/AppVendor.js"></script>
     <script src="../../assets/js/core/demo/Demo.js"></script>
     <script src="../../assets/js/core/demo/DemoDashboard.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>--
+    <script src="{{asset('assets/js/colliscript.js')}}" ></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/t/dt/dt-1.10.11/datatables.min.js"></script>
     <!-- END JAVASCRIPT -->
 
   </body>
