@@ -1,11 +1,23 @@
 colli_control_homepage:
     path:     /
-    defaults: { _controller: ColliControlBundle:Default:index }
+    defaults: { _controller: ColliControlBundle:Canton:index }
 
 colli_control_canton:
     path:     /canton
-    defaults: { _controller: ColliControlBundle:Default:canton }
+    defaults: { _controller: ColliControlBundle:Canton:canton }
 
 colli_control_sectores:
     path:     /sector
-    defaults: { _controller: ColliControlBundle:Default:sector }
+    defaults: { _controller: ColliControlBundle:Sector:sector }
+#--------------------------------------- edit and delete -----------------------
+colli_control_canton_edit:
+    path:     /canton/{pk}
+    defaults: { _controller: ColliControlBundle:Canton:editCanton }
+#--------------------------------------- change --------------------------------
+colli_control_canton_change:
+    path:     /canton/change/{pk}
+    defaults: { _controller: ColliControlBundle:Canton:change }
+#----------------------------------- report canton -----------------------------
+colli_control_canton_pdf:
+    path:     /canton/reporte/pdf
+    defaults: { _controller: ColliControlBundle:Canton:crearPdf }

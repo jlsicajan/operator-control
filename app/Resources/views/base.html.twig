@@ -18,7 +18,7 @@
       <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/material-design-iconic-font.min.css?1421434286')}}" />
       <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/rickshaw/rickshaw.css?1422792967')}}" />
       <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/morris/morris.core.css?1420463396')}}" />
-      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/dt/dt-1.10.11/datatables.min.css"/>
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/datatable/jquery.dataTables.min.css')}}" />
     {% endblock %}
     <!-- END STYLESHEETS -->
   </head>
@@ -484,7 +484,9 @@
     <script src="../../assets/js/core/demo/DemoDashboard.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>--
     <script src="{{asset('assets/js/colliscript.js')}}" ></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/t/dt/dt-1.10.11/datatables.min.js"></script>
+    <script type="text/javascript" src="{{asset('assets/js/datatable/jquery.dataTables.js')}}"></script>
+    <script type="text/javascript" src="{{asset('assets/js/datatable/jquery.dataTables.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('assets/js/bootstrap/bootstrap.js')}}"></script>
     <!-- END JAVASCRIPT -->
 
   </body>

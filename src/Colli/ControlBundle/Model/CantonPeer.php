@@ -8,8 +8,17 @@ class CantonPeer extends BaseCantonPeer {
 
   public static function getListado($id) {
     $cantones = CantonQuery::create()
-//            ->filterById($id)
+            ->_if($id != null)
+            ->filterById($id)
+            ->_endif()
             ->find();
+    return $cantones;
+  }
+
+  public static function getUno($id) {
+    $cantones = CantonQuery::create()
+            ->filterById($id)
+            ->findOne();
     return $cantones;
   }
 

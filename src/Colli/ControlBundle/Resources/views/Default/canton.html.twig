@@ -25,7 +25,8 @@
                 <tbody>
                   {% for item in cantones %}
                     <tr>
-                      <td>{{ item.descripcion }}</td>
+                      <td style="cursor: pointer;" class='colli_ajax_modal' 
+                          data-destino='#modal' data-href = '{{ path('colli_control_canton_edit', {pk: item.id}) }}'>{{ item.descripcion }}</td>
                     </tr>
                   {% endfor%}
                 </tbody>
@@ -35,7 +36,6 @@
         </div>
       </div>
     </div>
-
     <div class="col-md-3">
       <div class="card">
         <div class="card-head">
@@ -50,7 +50,34 @@
           {{ form_end(form) }}
         </div>
       </div>
+      <div class="card">
+        <div class="card-head">
+          <header class="text-primary">Imprimir reportes</header>
+        </div>
+        <div class="card-body height-4">
+          <a 
+            class="btn btn-block ink-reaction btn-success"
+            href="{{ path('colli_control_canton_pdf') }}">
+            <i class="md md-receipt">
+            </i>
+            GENERAR EXCEL
+          </a>
+          <a 
+            class="btn btn-block ink-reaction btn-danger"
+            href="{{ path('colli_control_canton_pdf') }}">
+            <i class="glyphicon glyphicon-th-list">
+            </i>
+            GENERAR PDF
+          </a>
+        </div>
+      </div>
     </div>
-
+    <div class='modal fade custom-width col-md-6' id ='modal'data-backdrop="static">
+      <div class="modal-dialog" style='width: 90%'>
+        <div class="modal-content">
+          Cargando Informacion ...
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock %}

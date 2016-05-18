@@ -2,6 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/ndrlubuntu/workspace/control_operador/src/Colli/ControlBundle/Controller/CantonController.php</file>
+            <file>file:/home/ndrlubuntu/workspace/control_operador/app/AppKernel.php</file>
+            <file>file:/home/ndrlubuntu/workspace/control_operador/src/Colli/ControlBundle/Resources/views/Default/Edit/canton.html.twig</file>
+            <file>file:/home/ndrlubuntu/workspace/control_operador/src/Colli/ControlBundle/Resources/views/Default/Reporte/canton.html.twig</file>
+            <file>file:/home/ndrlubuntu/workspace/control_operador/composer.json</file>
+            <file>file:/home/ndrlubuntu/workspace/control_operador/src/Colli/ControlBundle/Resources/views/Default/canton.html.twig</file>
+            <file>file:/home/ndrlubuntu/workspace/control_operador/src/Colli/ControlBundle/Form/Type/cantonType.php</file>
+        </group>
     </open-files>
 </project-private>
