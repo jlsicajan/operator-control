@@ -22,4 +22,9 @@ class CantonPeer extends BaseCantonPeer {
     return $cantones;
   }
 
+  public static function delete($id) {
+    $canton = CantonQuery::create()->findOneById($id);
+    $canton->delete();
+  }
+
 }

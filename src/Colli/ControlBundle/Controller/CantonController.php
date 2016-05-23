@@ -40,9 +40,14 @@ class CantonController extends Controller {
   }
 
   public function changeAction(Request $request, $pk) {
-    print_r('llego');
-    print_r($pk);
-    die();
+    $descripcion = $request->request->all();
+    $registro = CantonQuery::edit($pk, $descripcion['edit']['proceso']);
+    return $this->redirect($this->generateUrl('colli_control_canton'));
+  }
+
+  public function eliminarAction($id) {
+    $canton = CantonPeer::delete($id);
+    return $this->redirect($this->generateUrl('colli_control_canton'));
   }
 
   public function crearPdfAction() {

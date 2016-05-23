@@ -18,7 +18,7 @@
       <div class="modal-footer">
         <input class='btn btn-primary' type='submit' name="edit[btn]" value='Editar'>
         </form>
-        <a type="button" class="btn ink-reaction btn-danger">Eliminar</a>
+        <a href="{{ path('colli_control_canton_delete', {id: datos.Id })}}" type="button" class="btn ink-reaction btn-danger">Eliminar</a>
       </div>
   </div>
 {% endblock %} 

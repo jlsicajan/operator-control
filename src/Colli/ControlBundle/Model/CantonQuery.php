@@ -11,5 +11,12 @@ class CantonQuery extends BaseCantonQuery {
     $canton->setDescripcion($descripcion);
     $canton->save();
   }
+  
+  public static function edit($id, $descripcion){
+    $canton = CantonQuery::create()
+            ->findOneById($id);
+    $canton->setDescripcion($descripcion);
+    $canton->save();
+  }
 
 }

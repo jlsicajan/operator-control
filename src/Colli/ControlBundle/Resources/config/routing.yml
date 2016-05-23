@@ -13,6 +13,10 @@ colli_control_sectores:
 colli_control_canton_edit:
     path:     /canton/{pk}
     defaults: { _controller: ColliControlBundle:Canton:editCanton }
+    
+colli_control_canton_delete:
+    path:     /canton/eliminar/{id}
+    defaults: { _controller: ColliControlBundle:Canton:eliminar }
 #--------------------------------------- change --------------------------------
 colli_control_canton_change:
     path:     /canton/change/{pk}

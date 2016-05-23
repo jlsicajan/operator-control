@@ -6,7 +6,7 @@
             <file>file:/home/ndrlubuntu/workspace/control_operador/src/Colli/ControlBundle/Controller/CantonController.php</file>
             <file>file:/home/ndrlubuntu/workspace/control_operador/app/AppKernel.php</file>
             <file>file:/home/ndrlubuntu/workspace/control_operador/src/Colli/ControlBundle/Resources/views/Default/Edit/canton.html.twig</file>
-            <file>file:/home/ndrlubuntu/workspace/control_operador/src/Colli/ControlBundle/Resources/views/Default/Reporte/canton.html.twig</file>
+            <file>file:/home/ndrlubuntu/workspace/control_operador/src/Colli/ControlBundle/Resources/config/routing.yml</file>
             <file>file:/home/ndrlubuntu/workspace/control_operador/composer.json</file>
             <file>file:/home/ndrlubuntu/workspace/control_operador/src/Colli/ControlBundle/Resources/views/Default/canton.html.twig</file>
             <file>file:/home/ndrlubuntu/workspace/control_operador/src/Colli/ControlBundle/Form/Type/cantonType.php</file>
