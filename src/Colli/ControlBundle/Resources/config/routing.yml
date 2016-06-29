@@ -17,11 +17,26 @@ colli_control_canton_edit:
 colli_control_canton_delete:
     path:     /canton/eliminar/{id}
     defaults: { _controller: ColliControlBundle:Canton:eliminar }
+    
+colli_control_sector_edit:
+    path:     /sector/{pk}
+    defaults: { _controller: ColliControlBundle:Sector:editSector }
+    
+colli_control_sector_delete:
+    path:     /sector/eliminar/{id}
+    defaults: { _controller: ColliControlBundle:Sector:eliminar }
 #--------------------------------------- change --------------------------------
 colli_control_canton_change:
     path:     /canton/change/{pk}
     defaults: { _controller: ColliControlBundle:Canton:change }
-#----------------------------------- report canton -----------------------------
+    
+colli_control_sector_change:
+    path:     /sector/change/{id}
+    defaults: { _controller: ColliControlBundle:Sector:change }
+#----------------------------------- reporte canton ----------------------------
 colli_control_canton_pdf:
     path:     /canton/reporte/pdf
     defaults: { _controller: ColliControlBundle:Canton:crearPdf }
+colli_control_sector_pdf:
+    path:     /sector/reporte/pdf
+    defaults: { _controller: ColliControlBundle:Sector:crearPdf }

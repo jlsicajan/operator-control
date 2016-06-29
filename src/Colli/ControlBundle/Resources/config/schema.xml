@@ -11,7 +11,8 @@
     <column name="descripcion" type="varchar" required="true" size="50" />
     <column name="ancho" type="integer" required="true" size="11" />
     <column name="largo" type="integer" required="true" size="11" />
-    <column name="unidad_medida" type="varchar" required="true" size="50" />        
+    <column name="medida_ancho" type="varchar" required="true" size="50" />        
+    <column name="medida_largo" type="varchar" required="true" size="50" />        
     <column name="canton_id" type="integer" required="true" size="11" />        
     <foreign-key foreignTable="canton">
       <reference local="canton_id" foreign="id" />

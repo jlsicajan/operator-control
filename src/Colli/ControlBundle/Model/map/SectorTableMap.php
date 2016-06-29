@@ -46,7 +46,8 @@ class SectorTableMap extends TableMap
         $this->addColumn('descripcion', 'Descripcion', 'VARCHAR', true, 50, null);
         $this->addColumn('ancho', 'Ancho', 'INTEGER', true, 11, null);
         $this->addColumn('largo', 'Largo', 'INTEGER', true, 11, null);
-        $this->addColumn('unidad_medida', 'UnidadMedida', 'VARCHAR', true, 50, null);
+        $this->addColumn('medida_ancho', 'MedidaAncho', 'VARCHAR', true, 50, null);
+        $this->addColumn('medida_largo', 'MedidaLargo', 'VARCHAR', true, 50, null);
         $this->addForeignKey('canton_id', 'CantonId', 'INTEGER', 'canton', 'id', true, 11, null);
         // validators
     } // initialize()

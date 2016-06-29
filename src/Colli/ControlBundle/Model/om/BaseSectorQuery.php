@@ -24,14 +24,16 @@ use Colli\ControlBundle\Model\SectorQuery;
  * @method SectorQuery orderByDescripcion($order = Criteria::ASC) Order by the descripcion column
  * @method SectorQuery orderByAncho($order = Criteria::ASC) Order by the ancho column
  * @method SectorQuery orderByLargo($order = Criteria::ASC) Order by the largo column
- * @method SectorQuery orderByUnidadMedida($order = Criteria::ASC) Order by the unidad_medida column
+ * @method SectorQuery orderByMedidaAncho($order = Criteria::ASC) Order by the medida_ancho column
+ * @method SectorQuery orderByMedidaLargo($order = Criteria::ASC) Order by the medida_largo column
  * @method SectorQuery orderByCantonId($order = Criteria::ASC) Order by the canton_id column
  *
  * @method SectorQuery groupById() Group by the id column
  * @method SectorQuery groupByDescripcion() Group by the descripcion column
  * @method SectorQuery groupByAncho() Group by the ancho column
  * @method SectorQuery groupByLargo() Group by the largo column
- * @method SectorQuery groupByUnidadMedida() Group by the unidad_medida column
+ * @method SectorQuery groupByMedidaAncho() Group by the medida_ancho column
+ * @method SectorQuery groupByMedidaLargo() Group by the medida_largo column
  * @method SectorQuery groupByCantonId() Group by the canton_id column
  *
  * @method SectorQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -56,14 +58,16 @@ use Colli\ControlBundle\Model\SectorQuery;
  * @method Sector findOneByDescripcion(string $descripcion) Return the first Sector filtered by the descripcion column
  * @method Sector findOneByAncho(int $ancho) Return the first Sector filtered by the ancho column
  * @method Sector findOneByLargo(int $largo) Return the first Sector filtered by the largo column
- * @method Sector findOneByUnidadMedida(string $unidad_medida) Return the first Sector filtered by the unidad_medida column
+ * @method Sector findOneByMedidaAncho(string $medida_ancho) Return the first Sector filtered by the medida_ancho column
+ * @method Sector findOneByMedidaLargo(string $medida_largo) Return the first Sector filtered by the medida_largo column
  * @method Sector findOneByCantonId(int $canton_id) Return the first Sector filtered by the canton_id column
  *
  * @method array findById(int $id) Return Sector objects filtered by the id column
  * @method array findByDescripcion(string $descripcion) Return Sector objects filtered by the descripcion column
  * @method array findByAncho(int $ancho) Return Sector objects filtered by the ancho column
  * @method array findByLargo(int $largo) Return Sector objects filtered by the largo column
- * @method array findByUnidadMedida(string $unidad_medida) Return Sector objects filtered by the unidad_medida column
+ * @method array findByMedidaAncho(string $medida_ancho) Return Sector objects filtered by the medida_ancho column
+ * @method array findByMedidaLargo(string $medida_largo) Return Sector objects filtered by the medida_largo column
  * @method array findByCantonId(int $canton_id) Return Sector objects filtered by the canton_id column
  */
 abstract class BaseSectorQuery extends ModelCriteria
@@ -170,7 +174,7 @@ abstract class BaseSectorQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `descripcion`, `ancho`, `largo`, `unidad_medida`, `canton_id` FROM `sector` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `descripcion`, `ancho`, `largo`, `medida_ancho`, `medida_largo`, `canton_id` FROM `sector` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -415,32 +419,61 @@ abstract class BaseSectorQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the unidad_medida column
+     * Filter the query on the medida_ancho column
      *
      * Example usage:
      * <code>
-     * $query->filterByUnidadMedida('fooValue');   // WHERE unidad_medida = 'fooValue'
-     * $query->filterByUnidadMedida('%fooValue%'); // WHERE unidad_medida LIKE '%fooValue%'
+     * $query->filterByMedidaAncho('fooValue');   // WHERE medida_ancho = 'fooValue'
+     * $query->filterByMedidaAncho('%fooValue%'); // WHERE medida_ancho LIKE '%fooValue%'
      * </code>
      *
-     * @param     string $unidadMedida The value to use as filter.
+     * @param     string $medidaAncho The value to use as filter.
      *              Accepts wildcards (* and % trigger a LIKE)
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return SectorQuery The current query, for fluid interface
      */
-    public function filterByUnidadMedida($unidadMedida = null, $comparison = null)
+    public function filterByMedidaAncho($medidaAncho = null, $comparison = null)
     {
         if (null === $comparison) {
-            if (is_array($unidadMedida)) {
+            if (is_array($medidaAncho)) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $unidadMedida)) {
-                $unidadMedida = str_replace('*', '%', $unidadMedida);
+            } elseif (preg_match('/[\%\*]/', $medidaAncho)) {
+                $medidaAncho = str_replace('*', '%', $medidaAncho);
                 $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(SectorPeer::UNIDAD_MEDIDA, $unidadMedida, $comparison);
+        return $this->addUsingAlias(SectorPeer::MEDIDA_ANCHO, $medidaAncho, $comparison);
+    }
+
+    /**
+     * Filter the query on the medida_largo column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByMedidaLargo('fooValue');   // WHERE medida_largo = 'fooValue'
+     * $query->filterByMedidaLargo('%fooValue%'); // WHERE medida_largo LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $medidaLargo The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return SectorQuery The current query, for fluid interface
+     */
+    public function filterByMedidaLargo($medidaLargo = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($medidaLargo)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $medidaLargo)) {
+                $medidaLargo = str_replace('*', '%', $medidaLargo);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(SectorPeer::MEDIDA_LARGO, $medidaLargo, $comparison);
     }
 
     /**

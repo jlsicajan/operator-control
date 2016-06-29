@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CantonController extends Controller {
 
   public function indexAction() {
-    return $this->render('ColliControlBundle:Default:index.html.twig');
+    return $this->render('ColliControlBundle:General:index.html.twig');
   }
 
   public function cantonAction(Request $request) {
@@ -30,13 +30,13 @@ class CantonController extends Controller {
     }
     $cantones = CantonPeer::getListado(null);
     $context = array('cantones' => $cantones, 'form' => $form->createView());
-    return $this->render('ColliControlBundle:Default:canton.html.twig', $context);
+    return $this->render('ColliControlBundle:General:canton.html.twig', $context);
   }
 
   public function editCantonAction($pk) {
     $consulta = CantonPeer::getUno($pk);
     $context = array('datos' => $consulta);
-    return $this->render('ColliControlBundle:Default/Edit:canton.html.twig', $context);
+    return $this->render('ColliControlBundle:General/Edit:canton.html.twig', $context);
   }
 
   public function changeAction(Request $request, $pk) {
@@ -53,7 +53,7 @@ class CantonController extends Controller {
   public function crearPdfAction() {
     $cantones = CantonPeer::getListado(null);
     $context = array('cantones' => $cantones);
-    $html = $this->renderView('ColliControlBundle:Default/Reporte:canton.html.twig', $context);
+    $html = $this->renderView('ColliControlBundle:General/Reporte:canton.html.twig', $context);
     $fname = 'Cantones_' . date("Ymd-His") . ".pdf";
     $pdf = $this->get('white_october.tcpdf')->create();
     $pdf->SetAuthor('Fabian Sicajan');

@@ -30,13 +30,13 @@ abstract class BaseSectorPeer
     const TM_CLASS = 'Colli\\ControlBundle\\Model\\map\\SectorTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 7;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /** the column name for the id field */
     const ID = 'sector.id';
@@ -50,8 +50,11 @@ abstract class BaseSectorPeer
     /** the column name for the largo field */
     const LARGO = 'sector.largo';
 
-    /** the column name for the unidad_medida field */
-    const UNIDAD_MEDIDA = 'sector.unidad_medida';
+    /** the column name for the medida_ancho field */
+    const MEDIDA_ANCHO = 'sector.medida_ancho';
+
+    /** the column name for the medida_largo field */
+    const MEDIDA_LARGO = 'sector.medida_largo';
 
     /** the column name for the canton_id field */
     const CANTON_ID = 'sector.canton_id';
@@ -75,12 +78,12 @@ abstract class BaseSectorPeer
      * e.g. SectorPeer::$fieldNames[SectorPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Descripcion', 'Ancho', 'Largo', 'UnidadMedida', 'CantonId', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'descripcion', 'ancho', 'largo', 'unidadMedida', 'cantonId', ),
-        BasePeer::TYPE_COLNAME => array (SectorPeer::ID, SectorPeer::DESCRIPCION, SectorPeer::ANCHO, SectorPeer::LARGO, SectorPeer::UNIDAD_MEDIDA, SectorPeer::CANTON_ID, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'DESCRIPCION', 'ANCHO', 'LARGO', 'UNIDAD_MEDIDA', 'CANTON_ID', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'descripcion', 'ancho', 'largo', 'unidad_medida', 'canton_id', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'Descripcion', 'Ancho', 'Largo', 'MedidaAncho', 'MedidaLargo', 'CantonId', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'descripcion', 'ancho', 'largo', 'medidaAncho', 'medidaLargo', 'cantonId', ),
+        BasePeer::TYPE_COLNAME => array (SectorPeer::ID, SectorPeer::DESCRIPCION, SectorPeer::ANCHO, SectorPeer::LARGO, SectorPeer::MEDIDA_ANCHO, SectorPeer::MEDIDA_LARGO, SectorPeer::CANTON_ID, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'DESCRIPCION', 'ANCHO', 'LARGO', 'MEDIDA_ANCHO', 'MEDIDA_LARGO', 'CANTON_ID', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'descripcion', 'ancho', 'largo', 'medida_ancho', 'medida_largo', 'canton_id', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -90,12 +93,12 @@ abstract class BaseSectorPeer
      * e.g. SectorPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Descripcion' => 1, 'Ancho' => 2, 'Largo' => 3, 'UnidadMedida' => 4, 'CantonId' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'descripcion' => 1, 'ancho' => 2, 'largo' => 3, 'unidadMedida' => 4, 'cantonId' => 5, ),
-        BasePeer::TYPE_COLNAME => array (SectorPeer::ID => 0, SectorPeer::DESCRIPCION => 1, SectorPeer::ANCHO => 2, SectorPeer::LARGO => 3, SectorPeer::UNIDAD_MEDIDA => 4, SectorPeer::CANTON_ID => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'DESCRIPCION' => 1, 'ANCHO' => 2, 'LARGO' => 3, 'UNIDAD_MEDIDA' => 4, 'CANTON_ID' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'descripcion' => 1, 'ancho' => 2, 'largo' => 3, 'unidad_medida' => 4, 'canton_id' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Descripcion' => 1, 'Ancho' => 2, 'Largo' => 3, 'MedidaAncho' => 4, 'MedidaLargo' => 5, 'CantonId' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'descripcion' => 1, 'ancho' => 2, 'largo' => 3, 'medidaAncho' => 4, 'medidaLargo' => 5, 'cantonId' => 6, ),
+        BasePeer::TYPE_COLNAME => array (SectorPeer::ID => 0, SectorPeer::DESCRIPCION => 1, SectorPeer::ANCHO => 2, SectorPeer::LARGO => 3, SectorPeer::MEDIDA_ANCHO => 4, SectorPeer::MEDIDA_LARGO => 5, SectorPeer::CANTON_ID => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'DESCRIPCION' => 1, 'ANCHO' => 2, 'LARGO' => 3, 'MEDIDA_ANCHO' => 4, 'MEDIDA_LARGO' => 5, 'CANTON_ID' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'descripcion' => 1, 'ancho' => 2, 'largo' => 3, 'medida_ancho' => 4, 'medida_largo' => 5, 'canton_id' => 6, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -173,14 +176,16 @@ abstract class BaseSectorPeer
             $criteria->addSelectColumn(SectorPeer::DESCRIPCION);
             $criteria->addSelectColumn(SectorPeer::ANCHO);
             $criteria->addSelectColumn(SectorPeer::LARGO);
-            $criteria->addSelectColumn(SectorPeer::UNIDAD_MEDIDA);
+            $criteria->addSelectColumn(SectorPeer::MEDIDA_ANCHO);
+            $criteria->addSelectColumn(SectorPeer::MEDIDA_LARGO);
             $criteria->addSelectColumn(SectorPeer::CANTON_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.descripcion');
             $criteria->addSelectColumn($alias . '.ancho');
             $criteria->addSelectColumn($alias . '.largo');
-            $criteria->addSelectColumn($alias . '.unidad_medida');
+            $criteria->addSelectColumn($alias . '.medida_ancho');
+            $criteria->addSelectColumn($alias . '.medida_largo');
             $criteria->addSelectColumn($alias . '.canton_id');
         }
     }

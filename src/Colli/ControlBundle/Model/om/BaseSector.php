@@ -69,10 +69,16 @@ abstract class BaseSector extends BaseObject implements Persistent
     protected $largo;
 
     /**
-     * The value for the unidad_medida field.
+     * The value for the medida_ancho field.
      * @var        string
      */
-    protected $unidad_medida;
+    protected $medida_ancho;
+
+    /**
+     * The value for the medida_largo field.
+     * @var        string
+     */
+    protected $medida_largo;
 
     /**
      * The value for the canton_id field.
@@ -174,14 +180,25 @@ abstract class BaseSector extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [unidad_medida] column value.
+     * Get the [medida_ancho] column value.
      *
      * @return string
      */
-    public function getUnidadMedida()
+    public function getMedidaAncho()
     {
 
-        return $this->unidad_medida;
+        return $this->medida_ancho;
+    }
+
+    /**
+     * Get the [medida_largo] column value.
+     *
+     * @return string
+     */
+    public function getMedidaLargo()
+    {
+
+        return $this->medida_largo;
     }
 
     /**
@@ -280,25 +297,46 @@ abstract class BaseSector extends BaseObject implements Persistent
     } // setLargo()
 
     /**
-     * Set the value of [unidad_medida] column.
+     * Set the value of [medida_ancho] column.
      *
      * @param  string $v new value
      * @return Sector The current object (for fluent API support)
      */
-    public function setUnidadMedida($v)
+    public function setMedidaAncho($v)
     {
         if ($v !== null) {
             $v = (string) $v;
         }
 
-        if ($this->unidad_medida !== $v) {
-            $this->unidad_medida = $v;
-            $this->modifiedColumns[] = SectorPeer::UNIDAD_MEDIDA;
+        if ($this->medida_ancho !== $v) {
+            $this->medida_ancho = $v;
+            $this->modifiedColumns[] = SectorPeer::MEDIDA_ANCHO;
         }
 
 
         return $this;
-    } // setUnidadMedida()
+    } // setMedidaAncho()
+
+    /**
+     * Set the value of [medida_largo] column.
+     *
+     * @param  string $v new value
+     * @return Sector The current object (for fluent API support)
+     */
+    public function setMedidaLargo($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->medida_largo !== $v) {
+            $this->medida_largo = $v;
+            $this->modifiedColumns[] = SectorPeer::MEDIDA_LARGO;
+        }
+
+
+        return $this;
+    } // setMedidaLargo()
 
     /**
      * Set the value of [canton_id] column.
@@ -361,8 +399,9 @@ abstract class BaseSector extends BaseObject implements Persistent
             $this->descripcion = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
             $this->ancho = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->largo = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->unidad_medida = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-            $this->canton_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->medida_ancho = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->medida_largo = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->canton_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -372,7 +411,7 @@ abstract class BaseSector extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 6; // 6 = SectorPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = SectorPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Sector object", $e);
@@ -651,8 +690,11 @@ abstract class BaseSector extends BaseObject implements Persistent
         if ($this->isColumnModified(SectorPeer::LARGO)) {
             $modifiedColumns[':p' . $index++]  = '`largo`';
         }
-        if ($this->isColumnModified(SectorPeer::UNIDAD_MEDIDA)) {
-            $modifiedColumns[':p' . $index++]  = '`unidad_medida`';
+        if ($this->isColumnModified(SectorPeer::MEDIDA_ANCHO)) {
+            $modifiedColumns[':p' . $index++]  = '`medida_ancho`';
+        }
+        if ($this->isColumnModified(SectorPeer::MEDIDA_LARGO)) {
+            $modifiedColumns[':p' . $index++]  = '`medida_largo`';
         }
         if ($this->isColumnModified(SectorPeer::CANTON_ID)) {
             $modifiedColumns[':p' . $index++]  = '`canton_id`';
@@ -680,8 +722,11 @@ abstract class BaseSector extends BaseObject implements Persistent
                     case '`largo`':
                         $stmt->bindValue($identifier, $this->largo, PDO::PARAM_INT);
                         break;
-                    case '`unidad_medida`':
-                        $stmt->bindValue($identifier, $this->unidad_medida, PDO::PARAM_STR);
+                    case '`medida_ancho`':
+                        $stmt->bindValue($identifier, $this->medida_ancho, PDO::PARAM_STR);
+                        break;
+                    case '`medida_largo`':
+                        $stmt->bindValue($identifier, $this->medida_largo, PDO::PARAM_STR);
                         break;
                     case '`canton_id`':
                         $stmt->bindValue($identifier, $this->canton_id, PDO::PARAM_INT);
@@ -861,9 +906,12 @@ abstract class BaseSector extends BaseObject implements Persistent
                 return $this->getLargo();
                 break;
             case 4:
-                return $this->getUnidadMedida();
+                return $this->getMedidaAncho();
                 break;
             case 5:
+                return $this->getMedidaLargo();
+                break;
+            case 6:
                 return $this->getCantonId();
                 break;
             default:
@@ -899,8 +947,9 @@ abstract class BaseSector extends BaseObject implements Persistent
             $keys[1] => $this->getDescripcion(),
             $keys[2] => $this->getAncho(),
             $keys[3] => $this->getLargo(),
-            $keys[4] => $this->getUnidadMedida(),
-            $keys[5] => $this->getCantonId(),
+            $keys[4] => $this->getMedidaAncho(),
+            $keys[5] => $this->getMedidaLargo(),
+            $keys[6] => $this->getCantonId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -964,9 +1013,12 @@ abstract class BaseSector extends BaseObject implements Persistent
                 $this->setLargo($value);
                 break;
             case 4:
-                $this->setUnidadMedida($value);
+                $this->setMedidaAncho($value);
                 break;
             case 5:
+                $this->setMedidaLargo($value);
+                break;
+            case 6:
                 $this->setCantonId($value);
                 break;
         } // switch()
@@ -997,8 +1049,9 @@ abstract class BaseSector extends BaseObject implements Persistent
         if (array_key_exists($keys[1], $arr)) $this->setDescripcion($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setAncho($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setLargo($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setUnidadMedida($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCantonId($arr[$keys[5]]);
+        if (array_key_exists($keys[4], $arr)) $this->setMedidaAncho($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setMedidaLargo($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCantonId($arr[$keys[6]]);
     }
 
     /**
@@ -1014,7 +1067,8 @@ abstract class BaseSector extends BaseObject implements Persistent
         if ($this->isColumnModified(SectorPeer::DESCRIPCION)) $criteria->add(SectorPeer::DESCRIPCION, $this->descripcion);
         if ($this->isColumnModified(SectorPeer::ANCHO)) $criteria->add(SectorPeer::ANCHO, $this->ancho);
         if ($this->isColumnModified(SectorPeer::LARGO)) $criteria->add(SectorPeer::LARGO, $this->largo);
-        if ($this->isColumnModified(SectorPeer::UNIDAD_MEDIDA)) $criteria->add(SectorPeer::UNIDAD_MEDIDA, $this->unidad_medida);
+        if ($this->isColumnModified(SectorPeer::MEDIDA_ANCHO)) $criteria->add(SectorPeer::MEDIDA_ANCHO, $this->medida_ancho);
+        if ($this->isColumnModified(SectorPeer::MEDIDA_LARGO)) $criteria->add(SectorPeer::MEDIDA_LARGO, $this->medida_largo);
         if ($this->isColumnModified(SectorPeer::CANTON_ID)) $criteria->add(SectorPeer::CANTON_ID, $this->canton_id);
 
         return $criteria;
@@ -1082,7 +1136,8 @@ abstract class BaseSector extends BaseObject implements Persistent
         $copyObj->setDescripcion($this->getDescripcion());
         $copyObj->setAncho($this->getAncho());
         $copyObj->setLargo($this->getLargo());
-        $copyObj->setUnidadMedida($this->getUnidadMedida());
+        $copyObj->setMedidaAncho($this->getMedidaAncho());
+        $copyObj->setMedidaLargo($this->getMedidaLargo());
         $copyObj->setCantonId($this->getCantonId());
 
         if ($deepCopy && !$this->startCopy) {
@@ -1834,7 +1889,8 @@ abstract class BaseSector extends BaseObject implements Persistent
         $this->descripcion = null;
         $this->ancho = null;
         $this->largo = null;
-        $this->unidad_medida = null;
+        $this->medida_ancho = null;
+        $this->medida_largo = null;
         $this->canton_id = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;

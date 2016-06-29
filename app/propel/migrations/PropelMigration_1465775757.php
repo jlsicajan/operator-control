@@ -2,10 +2,10 @@
 
 /**
  * Data object containing the SQL and PHP code to migrate the database
- * up to version 1462747325.
- * Generated on 2016-05-08 17:42:05 by ndrlubuntu
+ * up to version 1465775757.
+ * Generated on 2016-06-12 18:55:57 by ndrlubuntu
  */
-class PropelMigration_1462747325
+class PropelMigration_1465775757
 {
 
     public function preUp($manager)
@@ -52,28 +52,24 @@ ALTER TABLE `control` CHANGE `sector_id` `sector_id` INTEGER(11) NOT NULL;
 
 ALTER TABLE `control_bodega` CHANGE `bodega_id` `bodega_id` INTEGER(11);
 
-ALTER TABLE `control_bodega`
-    ADD `fecha_retiro` DATETIME AFTER `bodega_id`,
-    ADD `maquinaria_id` INTEGER(11) NOT NULL AFTER `fecha_retiro`,
-    ADD `fecha_ingreso` DATETIME AFTER `maquinaria_id`,
-    ADD `canton_id` INTEGER(11) AFTER `fecha_ingreso`,
-    ADD `sector_id` INTEGER(11) AFTER `canton_id`;
+ALTER TABLE `control_bodega` CHANGE `maquinaria_id` `maquinaria_id` INTEGER(11) NOT NULL;
 
-CREATE INDEX `control_bodega_FI_1` ON `control_bodega` (`canton_id`);
+ALTER TABLE `control_bodega` CHANGE `canton_id` `canton_id` INTEGER(11);
 
-CREATE INDEX `control_bodega_FI_2` ON `control_bodega` (`sector_id`);
-
-CREATE INDEX `control_bodega_FI_3` ON `control_bodega` (`maquinaria_id`);
-
-CREATE INDEX `control_bodega_FI_4` ON `control_bodega` (`bodega_id`);
+ALTER TABLE `control_bodega` CHANGE `sector_id` `sector_id` INTEGER(11);
 
 ALTER TABLE `maquinaria` CHANGE `numero` `numero` INTEGER(11) NOT NULL;
+
+ALTER TABLE `sector` CHANGE `unidad_medida` `medida_ancho` VARCHAR(50) NOT NULL;
 
 ALTER TABLE `sector` CHANGE `ancho` `ancho` INTEGER(11) NOT NULL;
 
 ALTER TABLE `sector` CHANGE `largo` `largo` INTEGER(11) NOT NULL;
 
 ALTER TABLE `sector` CHANGE `canton_id` `canton_id` INTEGER(11) NOT NULL;
+
+ALTER TABLE `sector`
+    ADD `medida_largo` VARCHAR(50) NOT NULL AFTER `medida_ancho`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
@@ -103,33 +99,25 @@ ALTER TABLE `control` CHANGE `canton_id` `canton_id` INTEGER NOT NULL;
 
 ALTER TABLE `control` CHANGE `sector_id` `sector_id` INTEGER NOT NULL;
 
-DROP INDEX `control_bodega_FI_1` ON `control_bodega`;
-
-DROP INDEX `control_bodega_FI_2` ON `control_bodega`;
-
-DROP INDEX `control_bodega_FI_3` ON `control_bodega`;
-
-DROP INDEX `control_bodega_FI_4` ON `control_bodega`;
-
 ALTER TABLE `control_bodega` CHANGE `bodega_id` `bodega_id` INTEGER;
 
-ALTER TABLE `control_bodega` DROP `fecha_retiro`;
+ALTER TABLE `control_bodega` CHANGE `maquinaria_id` `maquinaria_id` INTEGER NOT NULL;
 
-ALTER TABLE `control_bodega` DROP `maquinaria_id`;
+ALTER TABLE `control_bodega` CHANGE `canton_id` `canton_id` INTEGER;
 
-ALTER TABLE `control_bodega` DROP `fecha_ingreso`;
-
-ALTER TABLE `control_bodega` DROP `canton_id`;
-
-ALTER TABLE `control_bodega` DROP `sector_id`;
+ALTER TABLE `control_bodega` CHANGE `sector_id` `sector_id` INTEGER;
 
 ALTER TABLE `maquinaria` CHANGE `numero` `numero` INTEGER NOT NULL;
+
+ALTER TABLE `sector` CHANGE `medida_ancho` `unidad_medida` VARCHAR(50) NOT NULL;
 
 ALTER TABLE `sector` CHANGE `ancho` `ancho` INTEGER NOT NULL;
 
 ALTER TABLE `sector` CHANGE `largo` `largo` INTEGER NOT NULL;
 
 ALTER TABLE `sector` CHANGE `canton_id` `canton_id` INTEGER NOT NULL;
+
+ALTER TABLE `sector` DROP `medida_largo`;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

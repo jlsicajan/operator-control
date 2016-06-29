@@ -1,0 +1,31 @@
+<table>
+  <thead>
+    <tr>
+      <th>Nombre sector</th>
+      <th>Ancho</th>
+      <th>Largo</th>
+      <th>Canton</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in sectores %}
+      <tr style="cursor: pointer;" class='colli_ajax_modal' 
+          data-destino='#modal' data-href = '{{ path('colli_control_sector_edit', {pk: item.id}) }}'>
+        <td>{{ item.descripcion }}</td>
+        <td>{{ item.ancho }}  {{ item.medidaAncho }}</td>
+        <td>{{ item.largo }}  {{ item.medidaLargo }}</td>
+        <td>{{ item.getCanton().getDescripcion() }}</td>
+      </tr>
+    {% endfor%}
+  </tbody>
+</table>
+<style>
+  table, td, th {
+    border: 1px solid black;
+  }
+
+  th {
+    background-color: black;
+    color: white;
+  }
+</style>
