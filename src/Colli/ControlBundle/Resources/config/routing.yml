@@ -9,6 +9,14 @@ colli_control_canton:
 colli_control_sectores:
     path:     /sector
     defaults: { _controller: ColliControlBundle:Sector:sector }
+    
+colli_control_maquinaria:
+    path:     /maquinaria
+    defaults: { _controller: ColliControlBundle:Maquinaria:maquinaria }
+
+colli_control_bodega:
+    path:     /bodega
+    defaults: { _controller: ColliControlBundle:Bodega:bodega }
 #--------------------------------------- edit and delete -----------------------
 colli_control_canton_edit:
     path:     /canton/{pk}
@@ -25,6 +33,22 @@ colli_control_sector_edit:
 colli_control_sector_delete:
     path:     /sector/eliminar/{id}
     defaults: { _controller: ColliControlBundle:Sector:eliminar }
+
+colli_control_maquinaria_edit:
+    path:     /maquinaria/{pk}
+    defaults: { _controller: ColliControlBundle:Maquinaria:editMaquinaria }
+    
+colli_control_maquinaria_delete:
+    path:     /maquinaria/eliminar/{id}
+    defaults: { _controller: ColliControlBundle:Maquinaria:eliminar }
+
+colli_control_bodega_edit:
+    path:     /bodega/{pk}
+    defaults: { _controller: ColliControlBundle:Bodega:editBodega }
+    
+colli_control_bodega_delete:
+    path:     /bodega/eliminar/{id}
+    defaults: { _controller: ColliControlBundle:Bodega:eliminar }
 #--------------------------------------- change --------------------------------
 colli_control_canton_change:
     path:     /canton/change/{pk}
@@ -33,10 +57,27 @@ colli_control_canton_change:
 colli_control_sector_change:
     path:     /sector/change/{id}
     defaults: { _controller: ColliControlBundle:Sector:change }
+
+colli_control_maquinaria_change:
+    path:     /maquinaria/change/{id}
+    defaults: { _controller: ColliControlBundle:Maquinaria:change }
+
+colli_control_bodega_change:
+    path:     /bodega/change/{id}
+    defaults: { _controller: ColliControlBundle:Bodega:change }
 #----------------------------------- reporte canton ----------------------------
 colli_control_canton_pdf:
     path:     /canton/reporte/pdf
     defaults: { _controller: ColliControlBundle:Canton:crearPdf }
+    
 colli_control_sector_pdf:
     path:     /sector/reporte/pdf
     defaults: { _controller: ColliControlBundle:Sector:crearPdf }
+
+colli_control_maquinaria_pdf:
+    path:     /maquinaria/reporte/pdf
+    defaults: { _controller: ColliControlBundle:Maquinaria:crearPdf }
+
+colli_control_bodega_pdf:
+    path:     /bodega/reporte/pdf
+    defaults: { _controller: ColliControlBundle:Bodega:crearPdf }

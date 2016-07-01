@@ -1,0 +1,28 @@
+<table>
+  <thead>
+    <tr>
+      <th>Descripcion</th>
+      <th>Cantidad</th>
+      <th>Precio</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in bodega %}
+      <tr>
+        <td>{{ item.descripcion }}</td>
+        <td>{{ item.cantidad }}</td>
+        <td>{{ item.precio }}</td>
+      </tr>
+    {% endfor%}
+  </tbody>
+</table>
+<style>
+  table, td, th {
+    border: 1px solid black;
+  }
+
+  th {
+    background-color: black;
+    color: white;
+  }
+</style>

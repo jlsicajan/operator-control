@@ -9,8 +9,7 @@
   </thead>
   <tbody>
     {% for item in sectores %}
-      <tr style="cursor: pointer;" class='colli_ajax_modal' 
-          data-destino='#modal' data-href = '{{ path('colli_control_sector_edit', {pk: item.id}) }}'>
+      <tr>
         <td>{{ item.descripcion }}</td>
         <td>{{ item.ancho }}  {{ item.medidaAncho }}</td>
         <td>{{ item.largo }}  {{ item.medidaLargo }}</td>

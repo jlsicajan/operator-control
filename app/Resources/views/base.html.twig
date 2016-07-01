@@ -146,7 +146,7 @@
 
             <!-- BEGIN UI -->
             <li>
-              <a href="">
+              <a href = '{{ path('colli_control_maquinaria') }}'>
                 <div class="gui-icon"><i class="fa fa-subway"></i></div>
                 <span class="title">Maquinas</span>
               </a>
@@ -154,9 +154,15 @@
             <!-- END UI -->
             <!-- BEGIN PAGES -->
             <li>
-              <a href="">
+              <a href = '{{ path('colli_control_bodega') }}'>
                 <div class="gui-icon"><i class="fa fa-archive"></i></div>
                 <span class="title">Bodega</span>
+              </a>
+            </li><!--end /menu-li -->
+            <li>
+              <a href = '{{ path('colli_control_bodega_manejo') }}'>
+                <div class="gui-icon"><i class="md md-web"></i></div>
+                <span class="title">Control de la bodega</span>
               </a>
             </li><!--end /menu-li -->
             <!-- BEGIN TABLES -->
