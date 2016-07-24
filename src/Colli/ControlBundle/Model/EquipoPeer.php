@@ -2,29 +2,29 @@
 
 namespace Colli\ControlBundle\Model;
 
-use Colli\ControlBundle\Model\om\BaseControlBodegaPeer;
+use Colli\ControlBundle\Model\om\BaseEquipoPeer;
 
-class ControlBodegaPeer extends BaseControlBodegaPeer {
+class EquipoPeer extends BaseEquipoPeer {
 
   public static function getListado($id) {
-    $bodega = ControlBodegaQuery::create()
+    $equipo = EquipoQuery::create()
             ->_if($id != null)
             ->filterById($id)
             ->_endif()
             ->find();
-    return $bodega;
+    return $equipo;
   }
 
   public static function getUno($id) {
-    $bodega = ControlBodegaQuery::create()
+    $equipo = EquipoQuery::create()
             ->filterById($id)
             ->findOne();
-    return $bodega;
+    return $equipo;
   }
 
   public static function delete($id) {
-    $bodega = ControlBodegaQuery::create()->findOneById($id);
-    $bodega->delete();
+    $equipo = EquipoQuery::create()->findOneById($id);
+    $equipo->delete();
   }
 
 }

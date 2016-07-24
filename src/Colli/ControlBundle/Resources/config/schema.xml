@@ -19,25 +19,38 @@
     </foreign-key>
   </table>
   
-  <table name="bodega">
-    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
-    <column name="descripcion" type="varchar" required="true" primaryString="1" size="50" />    
-    <column name="cantidad" type="integer" required="true" size="11" />   
-    <column name="precio" type="integer" required="true" size="11" />   
-  </table>
-  
   <table name="maquinaria">
     <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
     <column name="descripcion" type="varchar" required="true" primaryString="1" size="50" />    
     <column name="numero" type="integer" required="true" size="11" />   
   </table>
+
+  <table name="equipo">
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="descripcion" type="varchar" required="true" primaryString="1" size="50" />
+  </table>
+  
+  <table name="bodega">
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+    <column name="equipo_id" type="integer" required="true" size="11" />   
+    <column name="cantidad" type="integer" required="true" size="11" />   
+    <column name="precio" type="integer" required="false" size="11" />   
+    <column name="estado" type="varchar" required="true" size="11" />
+    <column name="maquinaria_id" type="integer" required="false" size="11" />
+    <foreign-key foreignTable="maquinaria">
+      <reference local="maquinaria_id" foreign="id" />
+    </foreign-key>   
+    <foreign-key foreignTable="equipo">
+      <reference local="equipo_id" foreign="id" />
+    </foreign-key>   
+  </table>
   
   <table name="control_bodega">
     <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
     <column name="bodega_id" type="integer" required="false" size="11" />
-    <column name="fecha_retiro" type="timestamp"/>
+    <column name="fecha_retiro" type="date"/>
     <column name="maquinaria_id" type="integer" required="true" size="11" />
-    <column name="fecha_ingreso" type="timestamp"/>
+    <column name="fecha_ingreso" type="date"/>
     <column name="canton_id" type="integer" required="false" size="11" />
     <column name="sector_id" type="integer" required="false" size="11" />
     <foreign-key foreignTable="canton">

@@ -12,6 +12,7 @@ use \PropelCollection;
 use \PropelException;
 use \PropelObjectCollection;
 use \PropelPDO;
+use Colli\ControlBundle\Model\Bodega;
 use Colli\ControlBundle\Model\Control;
 use Colli\ControlBundle\Model\ControlBodega;
 use Colli\ControlBundle\Model\Maquinaria;
@@ -30,6 +31,10 @@ use Colli\ControlBundle\Model\MaquinariaQuery;
  * @method MaquinariaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method MaquinariaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method MaquinariaQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method MaquinariaQuery leftJoinBodega($relationAlias = null) Adds a LEFT JOIN clause to the query using the Bodega relation
+ * @method MaquinariaQuery rightJoinBodega($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Bodega relation
+ * @method MaquinariaQuery innerJoinBodega($relationAlias = null) Adds a INNER JOIN clause to the query using the Bodega relation
  *
  * @method MaquinariaQuery leftJoinControlBodega($relationAlias = null) Adds a LEFT JOIN clause to the query using the ControlBodega relation
  * @method MaquinariaQuery rightJoinControlBodega($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ControlBodega relation
@@ -353,6 +358,80 @@ abstract class BaseMaquinariaQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(MaquinariaPeer::NUMERO, $numero, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Bodega object
+     *
+     * @param   Bodega|PropelObjectCollection $bodega  the related object to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 MaquinariaQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByBodega($bodega, $comparison = null)
+    {
+        if ($bodega instanceof Bodega) {
+            return $this
+                ->addUsingAlias(MaquinariaPeer::ID, $bodega->getMaquinariaId(), $comparison);
+        } elseif ($bodega instanceof PropelObjectCollection) {
+            return $this
+                ->useBodegaQuery()
+                ->filterByPrimaryKeys($bodega->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterByBodega() only accepts arguments of type Bodega or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Bodega relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return MaquinariaQuery The current query, for fluid interface
+     */
+    public function joinBodega($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Bodega');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Bodega');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Bodega relation Bodega object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Colli\ControlBundle\Model\BodegaQuery A secondary query class using the current class as primary query
+     */
+    public function useBodegaQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinBodega($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Bodega', '\Colli\ControlBundle\Model\BodegaQuery');
     }
 
     /**

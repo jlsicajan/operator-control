@@ -12,13 +12,26 @@
     <!-- BEGIN STYLESHEETS -->
     {% block stylesheets %}
       <link href='http://fonts.googleapis.com/css?family=Roboto:300italic,400italic,300,400,500,700,900' rel='stylesheet' type='text/css'/>
-      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/bootstrap.css?1422792965')}}" />
-      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/materialadmin.css?1425466319')}}" />
-      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/font-awesome.min.css?1422529194')}}" />
-      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/material-design-iconic-font.min.css?1421434286')}}" />
-      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/rickshaw/rickshaw.css?1422792967')}}" />
-      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/morris/morris.core.css?1420463396')}}" />
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/bootstrap.css')}}" />
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/materialadmin.css')}}" />
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/font-awesome.min.css')}}" />
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/material-design-iconic-font.min.css')}}" />
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/rickshaw/rickshaw.css')}}" />
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/morris/morris.core.css')}}" />
       <link type="text/css" rel="stylesheet" href="{{asset('assets/css/datatable/jquery.dataTables.min.css')}}" />
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/bootstrap-datepicker/datepicker3.css')}}" />
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/bootstrap-colorpicker/bootstrap-colorpicker.css')}}" />
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/select2/select2.css')}}" />
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/multi-select/multi-select.css')}}" />
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/jquery-ui/jquery-ui-theme.css')}}" />
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/bootstrap-tagsinput/bootstrap-tagsinput.css')}}" />
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/typeahead/typeahead.css')}}" />
+      <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/dropzone/dropzone-theme.css')}}" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="../../assets/js/libs/utils/html5shiv.js?1403934957"></script>
+    <script type="text/javascript" src="../../assets/js/libs/utils/respond.min.js?1403934956"></script>
+    <![endif]-->
     {% endblock %}
     <!-- END STYLESHEETS -->
   </head>
@@ -83,12 +96,12 @@
               <div>
                 {% block body %}
                 {% endblock %}
-{#                <div class="card">
-                  <div class="card-body no-padding height-9 scroll">
-                    <ul class="list divider-full-bleed">
-                    </ul>
-                  </div><!--end .card-body -->
-                </div><!--end .card -->#}
+                {#                <div class="card">
+                                  <div class="card-body no-padding height-9 scroll">
+                                    <ul class="list divider-full-bleed">
+                                    </ul>
+                                  </div><!--end .card-body -->
+                                </div><!--end .card -->#}
               </div><!--end .col -->
               <!-- END NEW REGISTRATIONS -->
 
@@ -154,6 +167,12 @@
             <!-- END UI -->
             <!-- BEGIN PAGES -->
             <li>
+              <a href = '{{ path('colli_control_equipo') }}'>
+                <div class="gui-icon"><i class="fa fa-briefcase"></i></div>
+                <span class="title">Equipo</span>
+              </a>
+            </li><!--end /menu-li -->
+            <li>
               <a href = '{{ path('colli_control_bodega') }}'>
                 <div class="gui-icon"><i class="fa fa-archive"></i></div>
                 <span class="title">Bodega</span>
@@ -167,7 +186,7 @@
             </li><!--end /menu-li -->
             <!-- BEGIN TABLES -->
             <li>
-              <a href="">
+              <a href = '{{ path('colli_control_ingresar_datos') }}'>
                 <div class="gui-icon"><i class="fa fa-table"></i></div>
                 <span class="title">Ingresar datos</span>
               </a>
@@ -488,11 +507,12 @@
     <script src="../../assets/js/core/source/AppVendor.js"></script>
     <script src="../../assets/js/core/demo/Demo.js"></script>
     <script src="../../assets/js/core/demo/DemoDashboard.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>--
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="{{asset('assets/js/colliscript.js')}}" ></script>
     <script type="text/javascript" src="{{asset('assets/js/datatable/jquery.dataTables.js')}}"></script>
     <script type="text/javascript" src="{{asset('assets/js/datatable/jquery.dataTables.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('assets/js/bootstrap/bootstrap.js')}}"></script>
+    <script type="text/javascript" src="{{asset('assets/js/libs/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
     <!-- END JAVASCRIPT -->
 
   </body>

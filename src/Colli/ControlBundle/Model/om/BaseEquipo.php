@@ -15,26 +15,22 @@ use \PropelObjectCollection;
 use \PropelPDO;
 use Colli\ControlBundle\Model\Bodega;
 use Colli\ControlBundle\Model\BodegaQuery;
-use Colli\ControlBundle\Model\Control;
-use Colli\ControlBundle\Model\ControlBodega;
-use Colli\ControlBundle\Model\ControlBodegaQuery;
-use Colli\ControlBundle\Model\ControlQuery;
-use Colli\ControlBundle\Model\Maquinaria;
-use Colli\ControlBundle\Model\MaquinariaPeer;
-use Colli\ControlBundle\Model\MaquinariaQuery;
+use Colli\ControlBundle\Model\Equipo;
+use Colli\ControlBundle\Model\EquipoPeer;
+use Colli\ControlBundle\Model\EquipoQuery;
 
-abstract class BaseMaquinaria extends BaseObject implements Persistent
+abstract class BaseEquipo extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'Colli\\ControlBundle\\Model\\MaquinariaPeer';
+    const PEER = 'Colli\\ControlBundle\\Model\\EquipoPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        MaquinariaPeer
+     * @var        EquipoPeer
      */
     protected static $peer;
 
@@ -57,28 +53,10 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
     protected $descripcion;
 
     /**
-     * The value for the numero field.
-     * @var        int
-     */
-    protected $numero;
-
-    /**
      * @var        PropelObjectCollection|Bodega[] Collection to store aggregation of Bodega objects.
      */
     protected $collBodegas;
     protected $collBodegasPartial;
-
-    /**
-     * @var        PropelObjectCollection|ControlBodega[] Collection to store aggregation of ControlBodega objects.
-     */
-    protected $collControlBodegas;
-    protected $collControlBodegasPartial;
-
-    /**
-     * @var        PropelObjectCollection|Control[] Collection to store aggregation of Control objects.
-     */
-    protected $collControls;
-    protected $collControlsPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -107,18 +85,6 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
     protected $bodegasScheduledForDeletion = null;
 
     /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $controlBodegasScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $controlsScheduledForDeletion = null;
-
-    /**
      * Get the [id] column value.
      *
      * @return int
@@ -141,21 +107,10 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [numero] column value.
-     *
-     * @return int
-     */
-    public function getNumero()
-    {
-
-        return $this->numero;
-    }
-
-    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
-     * @return Maquinaria The current object (for fluent API support)
+     * @return Equipo The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -165,7 +120,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = MaquinariaPeer::ID;
+            $this->modifiedColumns[] = EquipoPeer::ID;
         }
 
 
@@ -176,7 +131,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
      * Set the value of [descripcion] column.
      *
      * @param  string $v new value
-     * @return Maquinaria The current object (for fluent API support)
+     * @return Equipo The current object (for fluent API support)
      */
     public function setDescripcion($v)
     {
@@ -186,33 +141,12 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
 
         if ($this->descripcion !== $v) {
             $this->descripcion = $v;
-            $this->modifiedColumns[] = MaquinariaPeer::DESCRIPCION;
+            $this->modifiedColumns[] = EquipoPeer::DESCRIPCION;
         }
 
 
         return $this;
     } // setDescripcion()
-
-    /**
-     * Set the value of [numero] column.
-     *
-     * @param  int $v new value
-     * @return Maquinaria The current object (for fluent API support)
-     */
-    public function setNumero($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->numero !== $v) {
-            $this->numero = $v;
-            $this->modifiedColumns[] = MaquinariaPeer::NUMERO;
-        }
-
-
-        return $this;
-    } // setNumero()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -248,7 +182,6 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->descripcion = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->numero = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -258,10 +191,10 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 3; // 3 = MaquinariaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 2; // 2 = EquipoPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating Maquinaria object", $e);
+            throw new PropelException("Error populating Equipo object", $e);
         }
     }
 
@@ -304,13 +237,13 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(MaquinariaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(EquipoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = MaquinariaPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = EquipoPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -321,10 +254,6 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
         if ($deep) {  // also de-associate any related objects?
 
             $this->collBodegas = null;
-
-            $this->collControlBodegas = null;
-
-            $this->collControls = null;
 
         } // if (deep)
     }
@@ -346,12 +275,12 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(MaquinariaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(EquipoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = MaquinariaQuery::create()
+            $deleteQuery = EquipoQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -389,7 +318,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(MaquinariaPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(EquipoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -409,7 +338,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                MaquinariaPeer::addInstanceToPool($this);
+                EquipoPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -452,51 +381,15 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
 
             if ($this->bodegasScheduledForDeletion !== null) {
                 if (!$this->bodegasScheduledForDeletion->isEmpty()) {
-                    foreach ($this->bodegasScheduledForDeletion as $bodega) {
-                        // need to save related object because we set the relation to null
-                        $bodega->save($con);
-                    }
+                    BodegaQuery::create()
+                        ->filterByPrimaryKeys($this->bodegasScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
                     $this->bodegasScheduledForDeletion = null;
                 }
             }
 
             if ($this->collBodegas !== null) {
                 foreach ($this->collBodegas as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->controlBodegasScheduledForDeletion !== null) {
-                if (!$this->controlBodegasScheduledForDeletion->isEmpty()) {
-                    ControlBodegaQuery::create()
-                        ->filterByPrimaryKeys($this->controlBodegasScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->controlBodegasScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collControlBodegas !== null) {
-                foreach ($this->collControlBodegas as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->controlsScheduledForDeletion !== null) {
-                if (!$this->controlsScheduledForDeletion->isEmpty()) {
-                    foreach ($this->controlsScheduledForDeletion as $control) {
-                        // need to save related object because we set the relation to null
-                        $control->save($con);
-                    }
-                    $this->controlsScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collControls !== null) {
-                foreach ($this->collControls as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -523,24 +416,21 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = MaquinariaPeer::ID;
+        $this->modifiedColumns[] = EquipoPeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . MaquinariaPeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . EquipoPeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(MaquinariaPeer::ID)) {
+        if ($this->isColumnModified(EquipoPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(MaquinariaPeer::DESCRIPCION)) {
+        if ($this->isColumnModified(EquipoPeer::DESCRIPCION)) {
             $modifiedColumns[':p' . $index++]  = '`descripcion`';
-        }
-        if ($this->isColumnModified(MaquinariaPeer::NUMERO)) {
-            $modifiedColumns[':p' . $index++]  = '`numero`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `maquinaria` (%s) VALUES (%s)',
+            'INSERT INTO `equipo` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -554,9 +444,6 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
                         break;
                     case '`descripcion`':
                         $stmt->bindValue($identifier, $this->descripcion, PDO::PARAM_STR);
-                        break;
-                    case '`numero`':
-                        $stmt->bindValue($identifier, $this->numero, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -652,29 +539,13 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
             $failureMap = array();
 
 
-            if (($retval = MaquinariaPeer::doValidate($this, $columns)) !== true) {
+            if (($retval = EquipoPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
 
                 if ($this->collBodegas !== null) {
                     foreach ($this->collBodegas as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
-                if ($this->collControlBodegas !== null) {
-                    foreach ($this->collControlBodegas as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
-                if ($this->collControls !== null) {
-                    foreach ($this->collControls as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -700,7 +571,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = MaquinariaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = EquipoPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -721,9 +592,6 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
                 break;
             case 1:
                 return $this->getDescripcion();
-                break;
-            case 2:
-                return $this->getNumero();
                 break;
             default:
                 return null;
@@ -748,15 +616,14 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['Maquinaria'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['Equipo'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['Maquinaria'][$this->getPrimaryKey()] = true;
-        $keys = MaquinariaPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['Equipo'][$this->getPrimaryKey()] = true;
+        $keys = EquipoPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getDescripcion(),
-            $keys[2] => $this->getNumero(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -766,12 +633,6 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
         if ($includeForeignObjects) {
             if (null !== $this->collBodegas) {
                 $result['Bodegas'] = $this->collBodegas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collControlBodegas) {
-                $result['ControlBodegas'] = $this->collControlBodegas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collControls) {
-                $result['Controls'] = $this->collControls->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -791,7 +652,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = MaquinariaPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = EquipoPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -812,9 +673,6 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
                 break;
             case 1:
                 $this->setDescripcion($value);
-                break;
-            case 2:
-                $this->setNumero($value);
                 break;
         } // switch()
     }
@@ -838,11 +696,10 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = MaquinariaPeer::getFieldNames($keyType);
+        $keys = EquipoPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setDescripcion($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setNumero($arr[$keys[2]]);
     }
 
     /**
@@ -852,11 +709,10 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(MaquinariaPeer::DATABASE_NAME);
+        $criteria = new Criteria(EquipoPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(MaquinariaPeer::ID)) $criteria->add(MaquinariaPeer::ID, $this->id);
-        if ($this->isColumnModified(MaquinariaPeer::DESCRIPCION)) $criteria->add(MaquinariaPeer::DESCRIPCION, $this->descripcion);
-        if ($this->isColumnModified(MaquinariaPeer::NUMERO)) $criteria->add(MaquinariaPeer::NUMERO, $this->numero);
+        if ($this->isColumnModified(EquipoPeer::ID)) $criteria->add(EquipoPeer::ID, $this->id);
+        if ($this->isColumnModified(EquipoPeer::DESCRIPCION)) $criteria->add(EquipoPeer::DESCRIPCION, $this->descripcion);
 
         return $criteria;
     }
@@ -871,8 +727,8 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(MaquinariaPeer::DATABASE_NAME);
-        $criteria->add(MaquinariaPeer::ID, $this->id);
+        $criteria = new Criteria(EquipoPeer::DATABASE_NAME);
+        $criteria->add(EquipoPeer::ID, $this->id);
 
         return $criteria;
     }
@@ -913,7 +769,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of Maquinaria (or compatible) type.
+     * @param object $copyObj An object of Equipo (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -921,7 +777,6 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setDescripcion($this->getDescripcion());
-        $copyObj->setNumero($this->getNumero());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -933,18 +788,6 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
             foreach ($this->getBodegas() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addBodega($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getControlBodegas() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addControlBodega($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getControls() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addControl($relObj->copy($deepCopy));
                 }
             }
 
@@ -967,7 +810,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return Maquinaria Clone of current object.
+     * @return Equipo Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -987,12 +830,12 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return MaquinariaPeer
+     * @return EquipoPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new MaquinariaPeer();
+            self::$peer = new EquipoPeer();
         }
 
         return self::$peer;
@@ -1012,12 +855,6 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
         if ('Bodega' == $relationName) {
             $this->initBodegas();
         }
-        if ('ControlBodega' == $relationName) {
-            $this->initControlBodegas();
-        }
-        if ('Control' == $relationName) {
-            $this->initControls();
-        }
     }
 
     /**
@@ -1026,7 +863,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
-     * @return Maquinaria The current object (for fluent API support)
+     * @return Equipo The current object (for fluent API support)
      * @see        addBodegas()
      */
     public function clearBodegas()
@@ -1074,7 +911,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
      * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Maquinaria is new, it will return
+     * If this Equipo is new, it will return
      * an empty collection or the current collection; the criteria is ignored on a new object.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
@@ -1091,7 +928,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
                 $this->initBodegas();
             } else {
                 $collBodegas = BodegaQuery::create(null, $criteria)
-                    ->filterByMaquinaria($this)
+                    ->filterByEquipo($this)
                     ->find($con);
                 if (null !== $criteria) {
                     if (false !== $this->collBodegasPartial && count($collBodegas)) {
@@ -1135,7 +972,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
      *
      * @param PropelCollection $bodegas A Propel collection.
      * @param PropelPDO $con Optional connection object
-     * @return Maquinaria The current object (for fluent API support)
+     * @return Equipo The current object (for fluent API support)
      */
     public function setBodegas(PropelCollection $bodegas, PropelPDO $con = null)
     {
@@ -1145,7 +982,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
         $this->bodegasScheduledForDeletion = $bodegasToDelete;
 
         foreach ($bodegasToDelete as $bodegaRemoved) {
-            $bodegaRemoved->setMaquinaria(null);
+            $bodegaRemoved->setEquipo(null);
         }
 
         $this->collBodegas = null;
@@ -1185,7 +1022,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
             }
 
             return $query
-                ->filterByMaquinaria($this)
+                ->filterByEquipo($this)
                 ->count($con);
         }
 
@@ -1197,7 +1034,7 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
      * through the Bodega foreign key attribute.
      *
      * @param    Bodega $l Bodega
-     * @return Maquinaria The current object (for fluent API support)
+     * @return Equipo The current object (for fluent API support)
      */
     public function addBodega(Bodega $l)
     {
@@ -1223,12 +1060,12 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
     protected function doAddBodega($bodega)
     {
         $this->collBodegas[]= $bodega;
-        $bodega->setMaquinaria($this);
+        $bodega->setEquipo($this);
     }
 
     /**
      * @param	Bodega $bodega The bodega object to remove.
-     * @return Maquinaria The current object (for fluent API support)
+     * @return Equipo The current object (for fluent API support)
      */
     public function removeBodega($bodega)
     {
@@ -1238,8 +1075,8 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
                 $this->bodegasScheduledForDeletion = clone $this->collBodegas;
                 $this->bodegasScheduledForDeletion->clear();
             }
-            $this->bodegasScheduledForDeletion[]= $bodega;
-            $bodega->setMaquinaria(null);
+            $this->bodegasScheduledForDeletion[]= clone $bodega;
+            $bodega->setEquipo(null);
         }
 
         return $this;
@@ -1249,625 +1086,25 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
     /**
      * If this collection has already been initialized with
      * an identical criteria, it returns the collection.
-     * Otherwise if this Maquinaria is new, it will return
-     * an empty collection; or if this Maquinaria has previously
+     * Otherwise if this Equipo is new, it will return
+     * an empty collection; or if this Equipo has previously
      * been saved, it will retrieve related Bodegas from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
-     * actually need in Maquinaria.
+     * actually need in Equipo.
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|Bodega[] List of Bodega objects
      */
-    public function getBodegasJoinEquipo($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getBodegasJoinMaquinaria($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = BodegaQuery::create(null, $criteria);
-        $query->joinWith('Equipo', $join_behavior);
+        $query->joinWith('Maquinaria', $join_behavior);
 
         return $this->getBodegas($query, $con);
-    }
-
-    /**
-     * Clears out the collControlBodegas collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Maquinaria The current object (for fluent API support)
-     * @see        addControlBodegas()
-     */
-    public function clearControlBodegas()
-    {
-        $this->collControlBodegas = null; // important to set this to null since that means it is uninitialized
-        $this->collControlBodegasPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collControlBodegas collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialControlBodegas($v = true)
-    {
-        $this->collControlBodegasPartial = $v;
-    }
-
-    /**
-     * Initializes the collControlBodegas collection.
-     *
-     * By default this just sets the collControlBodegas collection to an empty array (like clearcollControlBodegas());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initControlBodegas($overrideExisting = true)
-    {
-        if (null !== $this->collControlBodegas && !$overrideExisting) {
-            return;
-        }
-        $this->collControlBodegas = new PropelObjectCollection();
-        $this->collControlBodegas->setModel('ControlBodega');
-    }
-
-    /**
-     * Gets an array of ControlBodega objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Maquinaria is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|ControlBodega[] List of ControlBodega objects
-     * @throws PropelException
-     */
-    public function getControlBodegas($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collControlBodegasPartial && !$this->isNew();
-        if (null === $this->collControlBodegas || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collControlBodegas) {
-                // return empty collection
-                $this->initControlBodegas();
-            } else {
-                $collControlBodegas = ControlBodegaQuery::create(null, $criteria)
-                    ->filterByMaquinaria($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collControlBodegasPartial && count($collControlBodegas)) {
-                      $this->initControlBodegas(false);
-
-                      foreach ($collControlBodegas as $obj) {
-                        if (false == $this->collControlBodegas->contains($obj)) {
-                          $this->collControlBodegas->append($obj);
-                        }
-                      }
-
-                      $this->collControlBodegasPartial = true;
-                    }
-
-                    $collControlBodegas->getInternalIterator()->rewind();
-
-                    return $collControlBodegas;
-                }
-
-                if ($partial && $this->collControlBodegas) {
-                    foreach ($this->collControlBodegas as $obj) {
-                        if ($obj->isNew()) {
-                            $collControlBodegas[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collControlBodegas = $collControlBodegas;
-                $this->collControlBodegasPartial = false;
-            }
-        }
-
-        return $this->collControlBodegas;
-    }
-
-    /**
-     * Sets a collection of ControlBodega objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $controlBodegas A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Maquinaria The current object (for fluent API support)
-     */
-    public function setControlBodegas(PropelCollection $controlBodegas, PropelPDO $con = null)
-    {
-        $controlBodegasToDelete = $this->getControlBodegas(new Criteria(), $con)->diff($controlBodegas);
-
-
-        $this->controlBodegasScheduledForDeletion = $controlBodegasToDelete;
-
-        foreach ($controlBodegasToDelete as $controlBodegaRemoved) {
-            $controlBodegaRemoved->setMaquinaria(null);
-        }
-
-        $this->collControlBodegas = null;
-        foreach ($controlBodegas as $controlBodega) {
-            $this->addControlBodega($controlBodega);
-        }
-
-        $this->collControlBodegas = $controlBodegas;
-        $this->collControlBodegasPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related ControlBodega objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related ControlBodega objects.
-     * @throws PropelException
-     */
-    public function countControlBodegas(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collControlBodegasPartial && !$this->isNew();
-        if (null === $this->collControlBodegas || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collControlBodegas) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getControlBodegas());
-            }
-            $query = ControlBodegaQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByMaquinaria($this)
-                ->count($con);
-        }
-
-        return count($this->collControlBodegas);
-    }
-
-    /**
-     * Method called to associate a ControlBodega object to this object
-     * through the ControlBodega foreign key attribute.
-     *
-     * @param    ControlBodega $l ControlBodega
-     * @return Maquinaria The current object (for fluent API support)
-     */
-    public function addControlBodega(ControlBodega $l)
-    {
-        if ($this->collControlBodegas === null) {
-            $this->initControlBodegas();
-            $this->collControlBodegasPartial = true;
-        }
-
-        if (!in_array($l, $this->collControlBodegas->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddControlBodega($l);
-
-            if ($this->controlBodegasScheduledForDeletion and $this->controlBodegasScheduledForDeletion->contains($l)) {
-                $this->controlBodegasScheduledForDeletion->remove($this->controlBodegasScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	ControlBodega $controlBodega The controlBodega object to add.
-     */
-    protected function doAddControlBodega($controlBodega)
-    {
-        $this->collControlBodegas[]= $controlBodega;
-        $controlBodega->setMaquinaria($this);
-    }
-
-    /**
-     * @param	ControlBodega $controlBodega The controlBodega object to remove.
-     * @return Maquinaria The current object (for fluent API support)
-     */
-    public function removeControlBodega($controlBodega)
-    {
-        if ($this->getControlBodegas()->contains($controlBodega)) {
-            $this->collControlBodegas->remove($this->collControlBodegas->search($controlBodega));
-            if (null === $this->controlBodegasScheduledForDeletion) {
-                $this->controlBodegasScheduledForDeletion = clone $this->collControlBodegas;
-                $this->controlBodegasScheduledForDeletion->clear();
-            }
-            $this->controlBodegasScheduledForDeletion[]= clone $controlBodega;
-            $controlBodega->setMaquinaria(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Maquinaria is new, it will return
-     * an empty collection; or if this Maquinaria has previously
-     * been saved, it will retrieve related ControlBodegas from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Maquinaria.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|ControlBodega[] List of ControlBodega objects
-     */
-    public function getControlBodegasJoinCanton($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ControlBodegaQuery::create(null, $criteria);
-        $query->joinWith('Canton', $join_behavior);
-
-        return $this->getControlBodegas($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Maquinaria is new, it will return
-     * an empty collection; or if this Maquinaria has previously
-     * been saved, it will retrieve related ControlBodegas from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Maquinaria.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|ControlBodega[] List of ControlBodega objects
-     */
-    public function getControlBodegasJoinSector($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ControlBodegaQuery::create(null, $criteria);
-        $query->joinWith('Sector', $join_behavior);
-
-        return $this->getControlBodegas($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Maquinaria is new, it will return
-     * an empty collection; or if this Maquinaria has previously
-     * been saved, it will retrieve related ControlBodegas from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Maquinaria.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|ControlBodega[] List of ControlBodega objects
-     */
-    public function getControlBodegasJoinBodega($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ControlBodegaQuery::create(null, $criteria);
-        $query->joinWith('Bodega', $join_behavior);
-
-        return $this->getControlBodegas($query, $con);
-    }
-
-    /**
-     * Clears out the collControls collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Maquinaria The current object (for fluent API support)
-     * @see        addControls()
-     */
-    public function clearControls()
-    {
-        $this->collControls = null; // important to set this to null since that means it is uninitialized
-        $this->collControlsPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collControls collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialControls($v = true)
-    {
-        $this->collControlsPartial = $v;
-    }
-
-    /**
-     * Initializes the collControls collection.
-     *
-     * By default this just sets the collControls collection to an empty array (like clearcollControls());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initControls($overrideExisting = true)
-    {
-        if (null !== $this->collControls && !$overrideExisting) {
-            return;
-        }
-        $this->collControls = new PropelObjectCollection();
-        $this->collControls->setModel('Control');
-    }
-
-    /**
-     * Gets an array of Control objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Maquinaria is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|Control[] List of Control objects
-     * @throws PropelException
-     */
-    public function getControls($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collControlsPartial && !$this->isNew();
-        if (null === $this->collControls || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collControls) {
-                // return empty collection
-                $this->initControls();
-            } else {
-                $collControls = ControlQuery::create(null, $criteria)
-                    ->filterByMaquinaria($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collControlsPartial && count($collControls)) {
-                      $this->initControls(false);
-
-                      foreach ($collControls as $obj) {
-                        if (false == $this->collControls->contains($obj)) {
-                          $this->collControls->append($obj);
-                        }
-                      }
-
-                      $this->collControlsPartial = true;
-                    }
-
-                    $collControls->getInternalIterator()->rewind();
-
-                    return $collControls;
-                }
-
-                if ($partial && $this->collControls) {
-                    foreach ($this->collControls as $obj) {
-                        if ($obj->isNew()) {
-                            $collControls[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collControls = $collControls;
-                $this->collControlsPartial = false;
-            }
-        }
-
-        return $this->collControls;
-    }
-
-    /**
-     * Sets a collection of Control objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $controls A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Maquinaria The current object (for fluent API support)
-     */
-    public function setControls(PropelCollection $controls, PropelPDO $con = null)
-    {
-        $controlsToDelete = $this->getControls(new Criteria(), $con)->diff($controls);
-
-
-        $this->controlsScheduledForDeletion = $controlsToDelete;
-
-        foreach ($controlsToDelete as $controlRemoved) {
-            $controlRemoved->setMaquinaria(null);
-        }
-
-        $this->collControls = null;
-        foreach ($controls as $control) {
-            $this->addControl($control);
-        }
-
-        $this->collControls = $controls;
-        $this->collControlsPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Control objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related Control objects.
-     * @throws PropelException
-     */
-    public function countControls(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collControlsPartial && !$this->isNew();
-        if (null === $this->collControls || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collControls) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getControls());
-            }
-            $query = ControlQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByMaquinaria($this)
-                ->count($con);
-        }
-
-        return count($this->collControls);
-    }
-
-    /**
-     * Method called to associate a Control object to this object
-     * through the Control foreign key attribute.
-     *
-     * @param    Control $l Control
-     * @return Maquinaria The current object (for fluent API support)
-     */
-    public function addControl(Control $l)
-    {
-        if ($this->collControls === null) {
-            $this->initControls();
-            $this->collControlsPartial = true;
-        }
-
-        if (!in_array($l, $this->collControls->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddControl($l);
-
-            if ($this->controlsScheduledForDeletion and $this->controlsScheduledForDeletion->contains($l)) {
-                $this->controlsScheduledForDeletion->remove($this->controlsScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	Control $control The control object to add.
-     */
-    protected function doAddControl($control)
-    {
-        $this->collControls[]= $control;
-        $control->setMaquinaria($this);
-    }
-
-    /**
-     * @param	Control $control The control object to remove.
-     * @return Maquinaria The current object (for fluent API support)
-     */
-    public function removeControl($control)
-    {
-        if ($this->getControls()->contains($control)) {
-            $this->collControls->remove($this->collControls->search($control));
-            if (null === $this->controlsScheduledForDeletion) {
-                $this->controlsScheduledForDeletion = clone $this->collControls;
-                $this->controlsScheduledForDeletion->clear();
-            }
-            $this->controlsScheduledForDeletion[]= $control;
-            $control->setMaquinaria(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Maquinaria is new, it will return
-     * an empty collection; or if this Maquinaria has previously
-     * been saved, it will retrieve related Controls from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Maquinaria.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Control[] List of Control objects
-     */
-    public function getControlsJoinCanton($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ControlQuery::create(null, $criteria);
-        $query->joinWith('Canton', $join_behavior);
-
-        return $this->getControls($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Maquinaria is new, it will return
-     * an empty collection; or if this Maquinaria has previously
-     * been saved, it will retrieve related Controls from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Maquinaria.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Control[] List of Control objects
-     */
-    public function getControlsJoinSector($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ControlQuery::create(null, $criteria);
-        $query->joinWith('Sector', $join_behavior);
-
-        return $this->getControls($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Maquinaria is new, it will return
-     * an empty collection; or if this Maquinaria has previously
-     * been saved, it will retrieve related Controls from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Maquinaria.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|Control[] List of Control objects
-     */
-    public function getControlsJoinBodega($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = ControlQuery::create(null, $criteria);
-        $query->joinWith('Bodega', $join_behavior);
-
-        return $this->getControls($query, $con);
     }
 
     /**
@@ -1877,7 +1114,6 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
     {
         $this->id = null;
         $this->descripcion = null;
-        $this->numero = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1905,16 +1141,6 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collControlBodegas) {
-                foreach ($this->collControlBodegas as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collControls) {
-                foreach ($this->collControls as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -1923,14 +1149,6 @@ abstract class BaseMaquinaria extends BaseObject implements Persistent
             $this->collBodegas->clearIterator();
         }
         $this->collBodegas = null;
-        if ($this->collControlBodegas instanceof PropelCollection) {
-            $this->collControlBodegas->clearIterator();
-        }
-        $this->collControlBodegas = null;
-        if ($this->collControls instanceof PropelCollection) {
-            $this->collControls->clearIterator();
-        }
-        $this->collControls = null;
     }
 
     /**

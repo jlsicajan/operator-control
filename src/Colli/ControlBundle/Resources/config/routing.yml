@@ -17,6 +17,18 @@ colli_control_maquinaria:
 colli_control_bodega:
     path:     /bodega
     defaults: { _controller: ColliControlBundle:Bodega:bodega }
+
+colli_control_equipo:
+    path:     /equipo
+    defaults: { _controller: ColliControlBundle:Equipo:equipo }
+
+colli_control_bodega_manejo:
+    path:     /ingreso/bodega
+    defaults: { _controller: ColliControlBundle:ManejoBodega:bodega }
+
+colli_control_ingresar_datos:
+    path:     /control/ingreso
+    defaults: { _controller: ColliControlBundle:Ingresar:ingreso }
 #--------------------------------------- edit and delete -----------------------
 colli_control_canton_edit:
     path:     /canton/{pk}
@@ -49,6 +61,22 @@ colli_control_bodega_edit:
 colli_control_bodega_delete:
     path:     /bodega/eliminar/{id}
     defaults: { _controller: ColliControlBundle:Bodega:eliminar }
+
+colli_control_equipo_edit:
+    path:     /equipo/{pk}
+    defaults: { _controller: ColliControlBundle:Equipo:editEquipo }
+    
+colli_control_equipo_delete:
+    path:     /equipo/eliminar/{id}
+    defaults: { _controller: ColliControlBundle:Equipo:eliminar }
+
+colli_control_manejo_bodega_edit:
+    path:     /manejo/{pk}
+    defaults: { _controller: ColliControlBundle:ManejoBodega:editBodega }
+    
+colli_control_manejo_bodega_delete:
+    path:     /manejo/eliminar/{id}
+    defaults: { _controller: ColliControlBundle:ManejoBodega:eliminar }
 #--------------------------------------- change --------------------------------
 colli_control_canton_change:
     path:     /canton/change/{pk}
@@ -65,6 +93,14 @@ colli_control_maquinaria_change:
 colli_control_bodega_change:
     path:     /bodega/change/{id}
     defaults: { _controller: ColliControlBundle:Bodega:change }
+
+colli_control_equipo_change:
+    path:     /equipo/change/{id}
+    defaults: { _controller: ColliControlBundle:Equipo:change }
+
+colli_control_manejo_bodega_change:
+    path:     /manejo/change/{id}
+    defaults: { _controller: ColliControlBundle:ManejoBodega:change }
 #----------------------------------- reporte canton ----------------------------
 colli_control_canton_pdf:
     path:     /canton/reporte/pdf
@@ -81,3 +117,7 @@ colli_control_maquinaria_pdf:
 colli_control_bodega_pdf:
     path:     /bodega/reporte/pdf
     defaults: { _controller: ColliControlBundle:Bodega:crearPdf }
+
+colli_control_manejo_bodega_pdf:
+    path:     /manejo/reporte/pdf
+    defaults: { _controller: ColliControlBundle:ManejoBodega:crearPdf }

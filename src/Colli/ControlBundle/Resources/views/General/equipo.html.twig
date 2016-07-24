@@ -1,0 +1,62 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Equipo{% endblock %}
+{% block body %}
+  <div class="row">
+    <div class="col-md-9">
+      <div class="card ">
+        <div class="row">
+          <div class="card-head">
+            <header>Listado de equipo</header>
+          </div>
+          <div class="card-body height-13">
+            <div class="table-responsive">
+              <table id="data_table_simple" class="display" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>Descripcion</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>Descripcion</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  {% for item in equipos %}
+                    <tr>
+                      <td style="cursor: pointer;" class='colli_ajax_modal' 
+                          data-destino='#modal' data-href = '{{ path('colli_control_equipo_edit', {pk: item.id}) }}'>{{ item.descripcion }}</td>
+                    </tr>
+                  {% endfor%}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-head">
+          <header class="text-primary">Ingresar equipo</header>
+        </div>
+        <div class="card-body height-5">
+          {{ form_start(form, {'attr': {'class': 'form'}}) }}											
+          <div class="form-group">
+            {{ form_widget(form.descripcion) }}
+            <label for="descripcion">Descripcion</label>
+          </div>
+          {{ form_end(form) }}
+        </div>
+      </div>
+    </div>
+    <div class='modal fade custom-width col-md-6' id ='modal'data-backdrop="static">
+      <div class="modal-dialog" style='width: 90%'>
+        <div class="modal-content">
+          Cargando Informacion ...
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

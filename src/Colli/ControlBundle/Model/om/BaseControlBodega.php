@@ -156,7 +156,7 @@ abstract class BaseControlBodega extends BaseObject implements Persistent
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
     public function getFechaRetiro($format = null)
@@ -165,7 +165,7 @@ abstract class BaseControlBodega extends BaseObject implements Persistent
             return null;
         }
 
-        if ($this->fecha_retiro === '0000-00-00 00:00:00') {
+        if ($this->fecha_retiro === '0000-00-00') {
             // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
@@ -207,7 +207,7 @@ abstract class BaseControlBodega extends BaseObject implements Persistent
      *
      * @param string $format The date/time format string (either date()-style or strftime()-style).
      *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
      * @throws PropelException - if unable to parse/validate the date/time value.
      */
     public function getFechaIngreso($format = null)
@@ -216,7 +216,7 @@ abstract class BaseControlBodega extends BaseObject implements Persistent
             return null;
         }
 
-        if ($this->fecha_ingreso === '0000-00-00 00:00:00') {
+        if ($this->fecha_ingreso === '0000-00-00') {
             // while technically this is not a default value of null,
             // this seems to be closest in meaning.
             return null;
@@ -320,8 +320,8 @@ abstract class BaseControlBodega extends BaseObject implements Persistent
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
         if ($this->fecha_retiro !== null || $dt !== null) {
-            $currentDateAsString = ($this->fecha_retiro !== null && $tmpDt = new DateTime($this->fecha_retiro)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            $currentDateAsString = ($this->fecha_retiro !== null && $tmpDt = new DateTime($this->fecha_retiro)) ? $tmpDt->format('Y-m-d') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->fecha_retiro = $newDateAsString;
                 $this->modifiedColumns[] = ControlBodegaPeer::FECHA_RETIRO;
@@ -368,8 +368,8 @@ abstract class BaseControlBodega extends BaseObject implements Persistent
     {
         $dt = PropelDateTime::newInstance($v, null, 'DateTime');
         if ($this->fecha_ingreso !== null || $dt !== null) {
-            $currentDateAsString = ($this->fecha_ingreso !== null && $tmpDt = new DateTime($this->fecha_ingreso)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            $currentDateAsString = ($this->fecha_ingreso !== null && $tmpDt = new DateTime($this->fecha_ingreso)) ? $tmpDt->format('Y-m-d') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
             if ($currentDateAsString !== $newDateAsString) {
                 $this->fecha_ingreso = $newDateAsString;
                 $this->modifiedColumns[] = ControlBodegaPeer::FECHA_INGRESO;

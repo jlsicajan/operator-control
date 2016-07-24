@@ -43,10 +43,11 @@ class BodegaTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('descripcion', 'Descripcion', 'VARCHAR', true, 50, null);
-        $this->getColumn('descripcion', false)->setPrimaryString(true);
+        $this->addForeignKey('equipo_id', 'EquipoId', 'INTEGER', 'equipo', 'id', true, 11, null);
         $this->addColumn('cantidad', 'Cantidad', 'INTEGER', true, 11, null);
-        $this->addColumn('precio', 'Precio', 'INTEGER', true, 11, null);
+        $this->addColumn('precio', 'Precio', 'INTEGER', false, 11, null);
+        $this->addColumn('estado', 'Estado', 'VARCHAR', true, 11, null);
+        $this->addForeignKey('maquinaria_id', 'MaquinariaId', 'INTEGER', 'maquinaria', 'id', false, 11, null);
         // validators
     } // initialize()
 
@@ -55,6 +56,8 @@ class BodegaTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Maquinaria', 'Colli\\ControlBundle\\Model\\Maquinaria', RelationMap::MANY_TO_ONE, array('maquinaria_id' => 'id', ), null, null);
+        $this->addRelation('Equipo', 'Colli\\ControlBundle\\Model\\Equipo', RelationMap::MANY_TO_ONE, array('equipo_id' => 'id', ), null, null);
         $this->addRelation('ControlBodega', 'Colli\\ControlBundle\\Model\\ControlBodega', RelationMap::ONE_TO_MANY, array('id' => 'bodega_id', ), null, null, 'ControlBodegas');
         $this->addRelation('Control', 'Colli\\ControlBundle\\Model\\Control', RelationMap::ONE_TO_MANY, array('id' => 'bodega_id', ), null, null, 'Controls');
     } // buildRelations()

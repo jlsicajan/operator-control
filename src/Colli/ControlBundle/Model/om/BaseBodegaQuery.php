@@ -17,21 +17,35 @@ use Colli\ControlBundle\Model\BodegaPeer;
 use Colli\ControlBundle\Model\BodegaQuery;
 use Colli\ControlBundle\Model\Control;
 use Colli\ControlBundle\Model\ControlBodega;
+use Colli\ControlBundle\Model\Equipo;
+use Colli\ControlBundle\Model\Maquinaria;
 
 /**
  * @method BodegaQuery orderById($order = Criteria::ASC) Order by the id column
- * @method BodegaQuery orderByDescripcion($order = Criteria::ASC) Order by the descripcion column
+ * @method BodegaQuery orderByEquipoId($order = Criteria::ASC) Order by the equipo_id column
  * @method BodegaQuery orderByCantidad($order = Criteria::ASC) Order by the cantidad column
  * @method BodegaQuery orderByPrecio($order = Criteria::ASC) Order by the precio column
+ * @method BodegaQuery orderByEstado($order = Criteria::ASC) Order by the estado column
+ * @method BodegaQuery orderByMaquinariaId($order = Criteria::ASC) Order by the maquinaria_id column
  *
  * @method BodegaQuery groupById() Group by the id column
- * @method BodegaQuery groupByDescripcion() Group by the descripcion column
+ * @method BodegaQuery groupByEquipoId() Group by the equipo_id column
  * @method BodegaQuery groupByCantidad() Group by the cantidad column
  * @method BodegaQuery groupByPrecio() Group by the precio column
+ * @method BodegaQuery groupByEstado() Group by the estado column
+ * @method BodegaQuery groupByMaquinariaId() Group by the maquinaria_id column
  *
  * @method BodegaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method BodegaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method BodegaQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ *
+ * @method BodegaQuery leftJoinMaquinaria($relationAlias = null) Adds a LEFT JOIN clause to the query using the Maquinaria relation
+ * @method BodegaQuery rightJoinMaquinaria($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Maquinaria relation
+ * @method BodegaQuery innerJoinMaquinaria($relationAlias = null) Adds a INNER JOIN clause to the query using the Maquinaria relation
+ *
+ * @method BodegaQuery leftJoinEquipo($relationAlias = null) Adds a LEFT JOIN clause to the query using the Equipo relation
+ * @method BodegaQuery rightJoinEquipo($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Equipo relation
+ * @method BodegaQuery innerJoinEquipo($relationAlias = null) Adds a INNER JOIN clause to the query using the Equipo relation
  *
  * @method BodegaQuery leftJoinControlBodega($relationAlias = null) Adds a LEFT JOIN clause to the query using the ControlBodega relation
  * @method BodegaQuery rightJoinControlBodega($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ControlBodega relation
@@ -44,14 +58,18 @@ use Colli\ControlBundle\Model\ControlBodega;
  * @method Bodega findOne(PropelPDO $con = null) Return the first Bodega matching the query
  * @method Bodega findOneOrCreate(PropelPDO $con = null) Return the first Bodega matching the query, or a new Bodega object populated from the query conditions when no match is found
  *
- * @method Bodega findOneByDescripcion(string $descripcion) Return the first Bodega filtered by the descripcion column
+ * @method Bodega findOneByEquipoId(int $equipo_id) Return the first Bodega filtered by the equipo_id column
  * @method Bodega findOneByCantidad(int $cantidad) Return the first Bodega filtered by the cantidad column
  * @method Bodega findOneByPrecio(int $precio) Return the first Bodega filtered by the precio column
+ * @method Bodega findOneByEstado(string $estado) Return the first Bodega filtered by the estado column
+ * @method Bodega findOneByMaquinariaId(int $maquinaria_id) Return the first Bodega filtered by the maquinaria_id column
  *
  * @method array findById(int $id) Return Bodega objects filtered by the id column
- * @method array findByDescripcion(string $descripcion) Return Bodega objects filtered by the descripcion column
+ * @method array findByEquipoId(int $equipo_id) Return Bodega objects filtered by the equipo_id column
  * @method array findByCantidad(int $cantidad) Return Bodega objects filtered by the cantidad column
  * @method array findByPrecio(int $precio) Return Bodega objects filtered by the precio column
+ * @method array findByEstado(string $estado) Return Bodega objects filtered by the estado column
+ * @method array findByMaquinariaId(int $maquinaria_id) Return Bodega objects filtered by the maquinaria_id column
  */
 abstract class BaseBodegaQuery extends ModelCriteria
 {
@@ -157,7 +175,7 @@ abstract class BaseBodegaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `descripcion`, `cantidad`, `precio` FROM `bodega` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `equipo_id`, `cantidad`, `precio`, `estado`, `maquinaria_id` FROM `bodega` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -289,32 +307,47 @@ abstract class BaseBodegaQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the descripcion column
+     * Filter the query on the equipo_id column
      *
      * Example usage:
      * <code>
-     * $query->filterByDescripcion('fooValue');   // WHERE descripcion = 'fooValue'
-     * $query->filterByDescripcion('%fooValue%'); // WHERE descripcion LIKE '%fooValue%'
+     * $query->filterByEquipoId(1234); // WHERE equipo_id = 1234
+     * $query->filterByEquipoId(array(12, 34)); // WHERE equipo_id IN (12, 34)
+     * $query->filterByEquipoId(array('min' => 12)); // WHERE equipo_id >= 12
+     * $query->filterByEquipoId(array('max' => 12)); // WHERE equipo_id <= 12
      * </code>
      *
-     * @param     string $descripcion The value to use as filter.
-     *              Accepts wildcards (* and % trigger a LIKE)
+     * @see       filterByEquipo()
+     *
+     * @param     mixed $equipoId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return BodegaQuery The current query, for fluid interface
      */
-    public function filterByDescripcion($descripcion = null, $comparison = null)
+    public function filterByEquipoId($equipoId = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($descripcion)) {
+        if (is_array($equipoId)) {
+            $useMinMax = false;
+            if (isset($equipoId['min'])) {
+                $this->addUsingAlias(BodegaPeer::EQUIPO_ID, $equipoId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($equipoId['max'])) {
+                $this->addUsingAlias(BodegaPeer::EQUIPO_ID, $equipoId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
-            } elseif (preg_match('/[\%\*]/', $descripcion)) {
-                $descripcion = str_replace('*', '%', $descripcion);
-                $comparison = Criteria::LIKE;
             }
         }
 
-        return $this->addUsingAlias(BodegaPeer::DESCRIPCION, $descripcion, $comparison);
+        return $this->addUsingAlias(BodegaPeer::EQUIPO_ID, $equipoId, $comparison);
     }
 
     /**
@@ -399,6 +432,231 @@ abstract class BaseBodegaQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(BodegaPeer::PRECIO, $precio, $comparison);
+    }
+
+    /**
+     * Filter the query on the estado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEstado('fooValue');   // WHERE estado = 'fooValue'
+     * $query->filterByEstado('%fooValue%'); // WHERE estado LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $estado The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return BodegaQuery The current query, for fluid interface
+     */
+    public function filterByEstado($estado = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($estado)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $estado)) {
+                $estado = str_replace('*', '%', $estado);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(BodegaPeer::ESTADO, $estado, $comparison);
+    }
+
+    /**
+     * Filter the query on the maquinaria_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByMaquinariaId(1234); // WHERE maquinaria_id = 1234
+     * $query->filterByMaquinariaId(array(12, 34)); // WHERE maquinaria_id IN (12, 34)
+     * $query->filterByMaquinariaId(array('min' => 12)); // WHERE maquinaria_id >= 12
+     * $query->filterByMaquinariaId(array('max' => 12)); // WHERE maquinaria_id <= 12
+     * </code>
+     *
+     * @see       filterByMaquinaria()
+     *
+     * @param     mixed $maquinariaId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return BodegaQuery The current query, for fluid interface
+     */
+    public function filterByMaquinariaId($maquinariaId = null, $comparison = null)
+    {
+        if (is_array($maquinariaId)) {
+            $useMinMax = false;
+            if (isset($maquinariaId['min'])) {
+                $this->addUsingAlias(BodegaPeer::MAQUINARIA_ID, $maquinariaId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($maquinariaId['max'])) {
+                $this->addUsingAlias(BodegaPeer::MAQUINARIA_ID, $maquinariaId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(BodegaPeer::MAQUINARIA_ID, $maquinariaId, $comparison);
+    }
+
+    /**
+     * Filter the query by a related Maquinaria object
+     *
+     * @param   Maquinaria|PropelObjectCollection $maquinaria The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 BodegaQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByMaquinaria($maquinaria, $comparison = null)
+    {
+        if ($maquinaria instanceof Maquinaria) {
+            return $this
+                ->addUsingAlias(BodegaPeer::MAQUINARIA_ID, $maquinaria->getId(), $comparison);
+        } elseif ($maquinaria instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(BodegaPeer::MAQUINARIA_ID, $maquinaria->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByMaquinaria() only accepts arguments of type Maquinaria or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Maquinaria relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return BodegaQuery The current query, for fluid interface
+     */
+    public function joinMaquinaria($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Maquinaria');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Maquinaria');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Maquinaria relation Maquinaria object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Colli\ControlBundle\Model\MaquinariaQuery A secondary query class using the current class as primary query
+     */
+    public function useMaquinariaQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinMaquinaria($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Maquinaria', '\Colli\ControlBundle\Model\MaquinariaQuery');
+    }
+
+    /**
+     * Filter the query by a related Equipo object
+     *
+     * @param   Equipo|PropelObjectCollection $equipo The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return                 BodegaQuery The current query, for fluid interface
+     * @throws PropelException - if the provided filter is invalid.
+     */
+    public function filterByEquipo($equipo, $comparison = null)
+    {
+        if ($equipo instanceof Equipo) {
+            return $this
+                ->addUsingAlias(BodegaPeer::EQUIPO_ID, $equipo->getId(), $comparison);
+        } elseif ($equipo instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(BodegaPeer::EQUIPO_ID, $equipo->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByEquipo() only accepts arguments of type Equipo or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the Equipo relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return BodegaQuery The current query, for fluid interface
+     */
+    public function joinEquipo($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('Equipo');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'Equipo');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the Equipo relation Equipo object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \Colli\ControlBundle\Model\EquipoQuery A secondary query class using the current class as primary query
+     */
+    public function useEquipoQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinEquipo($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Equipo', '\Colli\ControlBundle\Model\EquipoQuery');
     }
 
     /**

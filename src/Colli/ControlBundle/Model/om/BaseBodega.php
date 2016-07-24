@@ -20,6 +20,10 @@ use Colli\ControlBundle\Model\Control;
 use Colli\ControlBundle\Model\ControlBodega;
 use Colli\ControlBundle\Model\ControlBodegaQuery;
 use Colli\ControlBundle\Model\ControlQuery;
+use Colli\ControlBundle\Model\Equipo;
+use Colli\ControlBundle\Model\EquipoQuery;
+use Colli\ControlBundle\Model\Maquinaria;
+use Colli\ControlBundle\Model\MaquinariaQuery;
 
 abstract class BaseBodega extends BaseObject implements Persistent
 {
@@ -49,10 +53,10 @@ abstract class BaseBodega extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the descripcion field.
-     * @var        string
+     * The value for the equipo_id field.
+     * @var        int
      */
-    protected $descripcion;
+    protected $equipo_id;
 
     /**
      * The value for the cantidad field.
@@ -65,6 +69,28 @@ abstract class BaseBodega extends BaseObject implements Persistent
      * @var        int
      */
     protected $precio;
+
+    /**
+     * The value for the estado field.
+     * @var        string
+     */
+    protected $estado;
+
+    /**
+     * The value for the maquinaria_id field.
+     * @var        int
+     */
+    protected $maquinaria_id;
+
+    /**
+     * @var        Maquinaria
+     */
+    protected $aMaquinaria;
+
+    /**
+     * @var        Equipo
+     */
+    protected $aEquipo;
 
     /**
      * @var        PropelObjectCollection|ControlBodega[] Collection to store aggregation of ControlBodega objects.
@@ -122,14 +148,14 @@ abstract class BaseBodega extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [descripcion] column value.
+     * Get the [equipo_id] column value.
      *
-     * @return string
+     * @return int
      */
-    public function getDescripcion()
+    public function getEquipoId()
     {
 
-        return $this->descripcion;
+        return $this->equipo_id;
     }
 
     /**
@@ -155,6 +181,28 @@ abstract class BaseBodega extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [estado] column value.
+     *
+     * @return string
+     */
+    public function getEstado()
+    {
+
+        return $this->estado;
+    }
+
+    /**
+     * Get the [maquinaria_id] column value.
+     *
+     * @return int
+     */
+    public function getMaquinariaId()
+    {
+
+        return $this->maquinaria_id;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param  int $v new value
@@ -176,25 +224,29 @@ abstract class BaseBodega extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [descripcion] column.
+     * Set the value of [equipo_id] column.
      *
-     * @param  string $v new value
+     * @param  int $v new value
      * @return Bodega The current object (for fluent API support)
      */
-    public function setDescripcion($v)
+    public function setEquipoId($v)
     {
-        if ($v !== null) {
-            $v = (string) $v;
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
         }
 
-        if ($this->descripcion !== $v) {
-            $this->descripcion = $v;
-            $this->modifiedColumns[] = BodegaPeer::DESCRIPCION;
+        if ($this->equipo_id !== $v) {
+            $this->equipo_id = $v;
+            $this->modifiedColumns[] = BodegaPeer::EQUIPO_ID;
+        }
+
+        if ($this->aEquipo !== null && $this->aEquipo->getId() !== $v) {
+            $this->aEquipo = null;
         }
 
 
         return $this;
-    } // setDescripcion()
+    } // setEquipoId()
 
     /**
      * Set the value of [cantidad] column.
@@ -239,6 +291,52 @@ abstract class BaseBodega extends BaseObject implements Persistent
     } // setPrecio()
 
     /**
+     * Set the value of [estado] column.
+     *
+     * @param  string $v new value
+     * @return Bodega The current object (for fluent API support)
+     */
+    public function setEstado($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->estado !== $v) {
+            $this->estado = $v;
+            $this->modifiedColumns[] = BodegaPeer::ESTADO;
+        }
+
+
+        return $this;
+    } // setEstado()
+
+    /**
+     * Set the value of [maquinaria_id] column.
+     *
+     * @param  int $v new value
+     * @return Bodega The current object (for fluent API support)
+     */
+    public function setMaquinariaId($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->maquinaria_id !== $v) {
+            $this->maquinaria_id = $v;
+            $this->modifiedColumns[] = BodegaPeer::MAQUINARIA_ID;
+        }
+
+        if ($this->aMaquinaria !== null && $this->aMaquinaria->getId() !== $v) {
+            $this->aMaquinaria = null;
+        }
+
+
+        return $this;
+    } // setMaquinariaId()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -271,9 +369,11 @@ abstract class BaseBodega extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->descripcion = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->equipo_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->cantidad = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->precio = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->estado = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->maquinaria_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -283,7 +383,7 @@ abstract class BaseBodega extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 4; // 4 = BodegaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = BodegaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Bodega object", $e);
@@ -306,6 +406,12 @@ abstract class BaseBodega extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aEquipo !== null && $this->equipo_id !== $this->aEquipo->getId()) {
+            $this->aEquipo = null;
+        }
+        if ($this->aMaquinaria !== null && $this->maquinaria_id !== $this->aMaquinaria->getId()) {
+            $this->aMaquinaria = null;
+        }
     } // ensureConsistency
 
     /**
@@ -345,6 +451,8 @@ abstract class BaseBodega extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aMaquinaria = null;
+            $this->aEquipo = null;
             $this->collControlBodegas = null;
 
             $this->collControls = null;
@@ -462,6 +570,25 @@ abstract class BaseBodega extends BaseObject implements Persistent
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aMaquinaria !== null) {
+                if ($this->aMaquinaria->isModified() || $this->aMaquinaria->isNew()) {
+                    $affectedRows += $this->aMaquinaria->save($con);
+                }
+                $this->setMaquinaria($this->aMaquinaria);
+            }
+
+            if ($this->aEquipo !== null) {
+                if ($this->aEquipo->isModified() || $this->aEquipo->isNew()) {
+                    $affectedRows += $this->aEquipo->save($con);
+                }
+                $this->setEquipo($this->aEquipo);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -538,14 +665,20 @@ abstract class BaseBodega extends BaseObject implements Persistent
         if ($this->isColumnModified(BodegaPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
-        if ($this->isColumnModified(BodegaPeer::DESCRIPCION)) {
-            $modifiedColumns[':p' . $index++]  = '`descripcion`';
+        if ($this->isColumnModified(BodegaPeer::EQUIPO_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`equipo_id`';
         }
         if ($this->isColumnModified(BodegaPeer::CANTIDAD)) {
             $modifiedColumns[':p' . $index++]  = '`cantidad`';
         }
         if ($this->isColumnModified(BodegaPeer::PRECIO)) {
             $modifiedColumns[':p' . $index++]  = '`precio`';
+        }
+        if ($this->isColumnModified(BodegaPeer::ESTADO)) {
+            $modifiedColumns[':p' . $index++]  = '`estado`';
+        }
+        if ($this->isColumnModified(BodegaPeer::MAQUINARIA_ID)) {
+            $modifiedColumns[':p' . $index++]  = '`maquinaria_id`';
         }
 
         $sql = sprintf(
@@ -561,14 +694,20 @@ abstract class BaseBodega extends BaseObject implements Persistent
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`descripcion`':
-                        $stmt->bindValue($identifier, $this->descripcion, PDO::PARAM_STR);
+                    case '`equipo_id`':
+                        $stmt->bindValue($identifier, $this->equipo_id, PDO::PARAM_INT);
                         break;
                     case '`cantidad`':
                         $stmt->bindValue($identifier, $this->cantidad, PDO::PARAM_INT);
                         break;
                     case '`precio`':
                         $stmt->bindValue($identifier, $this->precio, PDO::PARAM_INT);
+                        break;
+                    case '`estado`':
+                        $stmt->bindValue($identifier, $this->estado, PDO::PARAM_STR);
+                        break;
+                    case '`maquinaria_id`':
+                        $stmt->bindValue($identifier, $this->maquinaria_id, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -664,6 +803,24 @@ abstract class BaseBodega extends BaseObject implements Persistent
             $failureMap = array();
 
 
+            // We call the validate method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aMaquinaria !== null) {
+                if (!$this->aMaquinaria->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aMaquinaria->getValidationFailures());
+                }
+            }
+
+            if ($this->aEquipo !== null) {
+                if (!$this->aEquipo->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aEquipo->getValidationFailures());
+                }
+            }
+
+
             if (($retval = BodegaPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
@@ -724,13 +881,19 @@ abstract class BaseBodega extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getDescripcion();
+                return $this->getEquipoId();
                 break;
             case 2:
                 return $this->getCantidad();
                 break;
             case 3:
                 return $this->getPrecio();
+                break;
+            case 4:
+                return $this->getEstado();
+                break;
+            case 5:
+                return $this->getMaquinariaId();
                 break;
             default:
                 return null;
@@ -762,9 +925,11 @@ abstract class BaseBodega extends BaseObject implements Persistent
         $keys = BodegaPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getDescripcion(),
+            $keys[1] => $this->getEquipoId(),
             $keys[2] => $this->getCantidad(),
             $keys[3] => $this->getPrecio(),
+            $keys[4] => $this->getEstado(),
+            $keys[5] => $this->getMaquinariaId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -772,6 +937,12 @@ abstract class BaseBodega extends BaseObject implements Persistent
         }
 
         if ($includeForeignObjects) {
+            if (null !== $this->aMaquinaria) {
+                $result['Maquinaria'] = $this->aMaquinaria->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aEquipo) {
+                $result['Equipo'] = $this->aEquipo->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->collControlBodegas) {
                 $result['ControlBodegas'] = $this->collControlBodegas->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
@@ -816,13 +987,19 @@ abstract class BaseBodega extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setDescripcion($value);
+                $this->setEquipoId($value);
                 break;
             case 2:
                 $this->setCantidad($value);
                 break;
             case 3:
                 $this->setPrecio($value);
+                break;
+            case 4:
+                $this->setEstado($value);
+                break;
+            case 5:
+                $this->setMaquinariaId($value);
                 break;
         } // switch()
     }
@@ -849,9 +1026,11 @@ abstract class BaseBodega extends BaseObject implements Persistent
         $keys = BodegaPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setDescripcion($arr[$keys[1]]);
+        if (array_key_exists($keys[1], $arr)) $this->setEquipoId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setCantidad($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setPrecio($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setEstado($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setMaquinariaId($arr[$keys[5]]);
     }
 
     /**
@@ -864,9 +1043,11 @@ abstract class BaseBodega extends BaseObject implements Persistent
         $criteria = new Criteria(BodegaPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(BodegaPeer::ID)) $criteria->add(BodegaPeer::ID, $this->id);
-        if ($this->isColumnModified(BodegaPeer::DESCRIPCION)) $criteria->add(BodegaPeer::DESCRIPCION, $this->descripcion);
+        if ($this->isColumnModified(BodegaPeer::EQUIPO_ID)) $criteria->add(BodegaPeer::EQUIPO_ID, $this->equipo_id);
         if ($this->isColumnModified(BodegaPeer::CANTIDAD)) $criteria->add(BodegaPeer::CANTIDAD, $this->cantidad);
         if ($this->isColumnModified(BodegaPeer::PRECIO)) $criteria->add(BodegaPeer::PRECIO, $this->precio);
+        if ($this->isColumnModified(BodegaPeer::ESTADO)) $criteria->add(BodegaPeer::ESTADO, $this->estado);
+        if ($this->isColumnModified(BodegaPeer::MAQUINARIA_ID)) $criteria->add(BodegaPeer::MAQUINARIA_ID, $this->maquinaria_id);
 
         return $criteria;
     }
@@ -930,9 +1111,11 @@ abstract class BaseBodega extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setDescripcion($this->getDescripcion());
+        $copyObj->setEquipoId($this->getEquipoId());
         $copyObj->setCantidad($this->getCantidad());
         $copyObj->setPrecio($this->getPrecio());
+        $copyObj->setEstado($this->getEstado());
+        $copyObj->setMaquinariaId($this->getMaquinariaId());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1001,6 +1184,110 @@ abstract class BaseBodega extends BaseObject implements Persistent
         }
 
         return self::$peer;
+    }
+
+    /**
+     * Declares an association between this object and a Maquinaria object.
+     *
+     * @param                  Maquinaria $v
+     * @return Bodega The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setMaquinaria(Maquinaria $v = null)
+    {
+        if ($v === null) {
+            $this->setMaquinariaId(NULL);
+        } else {
+            $this->setMaquinariaId($v->getId());
+        }
+
+        $this->aMaquinaria = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Maquinaria object, it will not be re-added.
+        if ($v !== null) {
+            $v->addBodega($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Maquinaria object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Maquinaria The associated Maquinaria object.
+     * @throws PropelException
+     */
+    public function getMaquinaria(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aMaquinaria === null && ($this->maquinaria_id !== null) && $doQuery) {
+            $this->aMaquinaria = MaquinariaQuery::create()->findPk($this->maquinaria_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aMaquinaria->addBodegas($this);
+             */
+        }
+
+        return $this->aMaquinaria;
+    }
+
+    /**
+     * Declares an association between this object and a Equipo object.
+     *
+     * @param                  Equipo $v
+     * @return Bodega The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setEquipo(Equipo $v = null)
+    {
+        if ($v === null) {
+            $this->setEquipoId(NULL);
+        } else {
+            $this->setEquipoId($v->getId());
+        }
+
+        $this->aEquipo = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Equipo object, it will not be re-added.
+        if ($v !== null) {
+            $v->addBodega($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Equipo object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Equipo The associated Equipo object.
+     * @throws PropelException
+     */
+    public function getEquipo(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aEquipo === null && ($this->equipo_id !== null) && $doQuery) {
+            $this->aEquipo = EquipoQuery::create()->findPk($this->equipo_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aEquipo->addBodegas($this);
+             */
+        }
+
+        return $this->aEquipo;
     }
 
 
@@ -1628,9 +1915,11 @@ abstract class BaseBodega extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->descripcion = null;
+        $this->equipo_id = null;
         $this->cantidad = null;
         $this->precio = null;
+        $this->estado = null;
+        $this->maquinaria_id = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -1663,6 +1952,12 @@ abstract class BaseBodega extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->aMaquinaria instanceof Persistent) {
+              $this->aMaquinaria->clearAllReferences($deep);
+            }
+            if ($this->aEquipo instanceof Persistent) {
+              $this->aEquipo->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -1675,16 +1970,18 @@ abstract class BaseBodega extends BaseObject implements Persistent
             $this->collControls->clearIterator();
         }
         $this->collControls = null;
+        $this->aMaquinaria = null;
+        $this->aEquipo = null;
     }
 
     /**
      * return the string representation of this object
      *
-     * @return string The value of the 'descripcion' column
+     * @return string
      */
     public function __toString()
     {
-        return (string) $this->getDescripcion();
+        return (string) $this->exportTo(BodegaPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**

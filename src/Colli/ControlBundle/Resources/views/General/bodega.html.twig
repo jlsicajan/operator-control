@@ -14,25 +14,35 @@
               <table id="data_table_simple" class="display" width="100%" cellspacing="0">
                 <thead>
                   <tr>
-                    <th>Descripcion</th>
+                    <th>Equipo</th>
+                    <th>Maquinaria</th>
                     <th>Cantidad</th>
                     <th>Precio</th>
+                    <th>Estado</th>
                   </tr>
                 </thead>
                 <tfoot>
                   <tr>
-                    <th>Descripcion</th>
+                    <th>Equipo</th>
+                    <th>Maquinaria</th>
                     <th>Cantidad</th>
                     <th>Precio</th>
+                    <th>Estado</th>
                   </tr>
                 </tfoot>
                 <tbody>
                   {% for item in bodega %}
                     <tr style="cursor: pointer;" class='colli_ajax_modal' 
-                          data-destino='#modal' data-href = '{{ path('colli_control_bodega_edit', {pk: item.id}) }}'>
-                      <td>{{ item.descripcion }}</td>
+                        data-destino='#modal' data-href = '{{ path('colli_control_bodega_edit', {pk: item.id}) }}'>
                       <td>{{ item.cantidad }}</td>
+                      <td>{{ item.getEquipo().getDescripcion() }}</td>
+                      {% if item.getMaquinaria() != null %}
+                        <td>{{ item.getMaquinaria().getDescripcion() }}</td>
+                      {% else %}
+                        <td>No asignado</td>
+                      {% endif %}
                       <td>{{ item.precio }}</td>
+                      <td>{{ item.estado }}</td>
                     </tr>
                   {% endfor%}
                 </tbody>
@@ -47,19 +57,27 @@
         <div class="card-head">
           <header class="text-primary">Ingresar a bodega</header>
         </div>
-        <div class="card-body height-8">
+        <div class="card-body height-11">
           {{ form_start(form, {'attr': {'class': 'form'}}) }}											
           <div class="form-group">
-            {{ form_widget(form.descripcion) }}
-            <label for="descripcion">Descricpion</label>
+            {{ form_widget(form.equipo) }}
+            <label for="equipo">Equipo</label>
           </div>
           <div class="form-group">
             {{ form_widget(form.cantidad) }}
             <label for="cantidad">Cantidad</label>
           </div>
           <div class="form-group">
+            {{ form_widget(form.maquinaria) }}
+            <label for="maquinaria">Maquinaria</label>
+          </div>
+          <div class="form-group">
             {{ form_widget(form.precio) }}
             <label for="precio">Precio</label>
+          </div>
+          <div class="form-group">
+            {{ form_widget(form.estado) }}
+            <label for="estado">Estado</label>
           </div>
           {{ form_end(form) }}
         </div>

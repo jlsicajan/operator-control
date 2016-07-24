@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'maquinaria' table.
+ * This class defines the structure of the 'equipo' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.src.Colli.ControlBundle.Model.map
  */
-class MaquinariaTableMap extends TableMap
+class EquipoTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'src.Colli.ControlBundle.Model.map.MaquinariaTableMap';
+    const CLASS_NAME = 'src.Colli.ControlBundle.Model.map.EquipoTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,16 +36,15 @@ class MaquinariaTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('maquinaria');
-        $this->setPhpName('Maquinaria');
-        $this->setClassname('Colli\\ControlBundle\\Model\\Maquinaria');
+        $this->setName('equipo');
+        $this->setPhpName('Equipo');
+        $this->setClassname('Colli\\ControlBundle\\Model\\Equipo');
         $this->setPackage('src.Colli.ControlBundle.Model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('descripcion', 'Descripcion', 'VARCHAR', true, 50, null);
         $this->getColumn('descripcion', false)->setPrimaryString(true);
-        $this->addColumn('numero', 'Numero', 'INTEGER', true, 11, null);
         // validators
     } // initialize()
 
@@ -54,9 +53,7 @@ class MaquinariaTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Bodega', 'Colli\\ControlBundle\\Model\\Bodega', RelationMap::ONE_TO_MANY, array('id' => 'maquinaria_id', ), null, null, 'Bodegas');
-        $this->addRelation('ControlBodega', 'Colli\\ControlBundle\\Model\\ControlBodega', RelationMap::ONE_TO_MANY, array('id' => 'maquinaria_id', ), null, null, 'ControlBodegas');
-        $this->addRelation('Control', 'Colli\\ControlBundle\\Model\\Control', RelationMap::ONE_TO_MANY, array('id' => 'maquinaria_id', ), null, null, 'Controls');
+        $this->addRelation('Bodega', 'Colli\\ControlBundle\\Model\\Bodega', RelationMap::ONE_TO_MANY, array('id' => 'equipo_id', ), null, null, 'Bodegas');
     } // buildRelations()
 
-} // MaquinariaTableMap
+} // EquipoTableMap

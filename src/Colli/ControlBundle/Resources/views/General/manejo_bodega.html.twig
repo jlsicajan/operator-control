@@ -1,0 +1,157 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Manejo de bodega{% endblock %}
+{% block body %}
+  {#  <script>
+      $(document).ready(function () {
+        var date = new Date();
+        date.setDate(date.getDate() + 1);
+        $('.datepicker').datepicker({
+          autoclose: true,
+          viewMode: "days",
+          minViewMode: "days",
+          format: "dd-mm-yyyy"
+        });
+        $('.datepicker').datepicker('setDate', date);
+      });
+    </script>#}
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card ">
+        <div class="row">
+          <div class="card-head">
+            <header>Manejo de bogeda</header>
+          </div>
+          <div class="card-body height-13">
+            <div class="table-responsive">
+              <table id="data_table_simple" class="display" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>Bodega</th>
+                    <th>Fecha retiro</th>
+                    <th>Maquinaria</th>
+                    <th>Fecha ingreso</th>
+                    <th>Canton</th>
+                    <th>Sector</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>Bodega</th>
+                    <th>Fecha retiro</th>
+                    <th>Maquinaria</th>
+                    <th>Fecha ingreso</th>
+                    <th>Canton</th>
+                    <th>Sector</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  {% for item in control_bodega %}
+                    <tr style="cursor: pointer;" class='colli_ajax_modal' 
+                        data-destino='#modal' data-href = '{{ path('colli_control_manejo_bodega_edit', {pk: item.id}) }}'>
+                      <td>{{ item.getBodega().getDescripcion()  }}</td>
+                      <td>{{ item.FechaRetiro | date('d-m-Y') }}</td>
+                      <td>{{ item.getMaquinaria().getDescripcion()  }}</td>
+                      <td>{{ item.FechaIngreso | date('d-m-Y') }}</td>
+                      <td>{{ item.getCanton().getDescripcion()  }}</td>
+                      <td>{{ item.getSector().getDescripcion()  }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-9">
+      <div class="card ">
+        <div class="row">
+          <div class="card-head">
+            <header>Ingresar movimiento</header>
+          </div>
+          <div class="card-body height-13">
+            <div class="table-responsive">
+              {{ form_start(form, {'attr': {'class': 'form'}}) }}		
+              <div class="col-lg-6">
+                <div class="form-group">
+                  {{ form_widget(form.bodega) }}
+                  <label for="bodega">Bodega</label>
+                </div>
+                <div class="form-group">
+                  {{ form_widget(form.fecha_ingreso) }}
+                  <label for="fecha_ingreso">Fecha ingreso</label>
+                </div>
+                <div class="form-group">
+                  {{ form_widget(form.maquinaria) }}
+                  <label for="maquinaria">Maquinaria</label>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="form-group">
+                  {{ form_widget(form.canton) }}
+                  <label for="canton">Canton</label>
+                </div>
+                <div class="form-group">
+                  {{ form_widget(form.fecha_retiro) }}
+                  <label for="fecha_retiro">Fecha retiro</label>
+                </div>
+                <div class="form-group">
+                  {{ form_widget(form.sector) }}
+                  <label for="sector">Sector</label>
+                </div>
+              </div>									
+              {{ form_end(form) }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='modal fade custom-width col-md-6' id ='modal'data-backdrop="static">
+        <div class="modal-dialog" style='width: 90%'>
+          <div class="modal-content">
+            Cargando Informacion ...
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-head">
+          <header class="text-primary">Datos de bodega</header>
+        </div>
+        <div class="card-body height-4">
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <header class="text-primary">Imprimir reportes</header>
+        </div>
+        <div class="card-body height-4">
+          <a 
+            class="btn btn-block ink-reaction btn-success"
+            href="{{ path('colli_control_manejo_bodega_pdf') }}">
+            <i class="md md-receipt">
+            </i>
+            GENERAR EXCEL
+          </a>
+          <a 
+            class="btn btn-block ink-reaction btn-danger"
+            href="{{ path('colli_control_manejo_bodega_pdf') }}">
+            <i class="glyphicon glyphicon-th-list">
+            </i>
+            GENERAR PDF
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class='modal fade custom-width col-md-6' id ='modal'data-backdrop="static">
+      <div class="modal-dialog" style='width: 90%'>
+        <div class="modal-content">
+          Cargando Informacion ...
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

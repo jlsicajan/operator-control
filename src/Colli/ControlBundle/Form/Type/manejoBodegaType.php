@@ -5,10 +5,10 @@ namespace Colli\ControlBundle\Form\Type;
 use Propel\PropelBundle\Form\BaseAbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class bodegaType extends BaseAbstractType {
+class manejoBodegaType extends BaseAbstractType {
 
   protected $options = array(
-      'name' => 'bodega',
+      'name' => 'manejo_bodega',
   );
 
   public function buildForm(FormBuilderInterface $builder, array $options) {
@@ -36,35 +36,44 @@ class bodegaType extends BaseAbstractType {
 //                ->endUse(),
 //        'attr' => array('class' => 'form-control')
 //    ));
-    $builder->add('equipo', 'model', array("label" => "Equipo",
-        'class' => 'Colli\ControlBundle\Model\Equipo',
+    $builder->add('bodega', 'model', array("label" => "Bodega",
+        'class' => 'Colli\ControlBundle\Model\Bodega',
         'property' => 'Descripcion',
-        'placeholder' => 'Escoga el equipo',
-        'attr' => array('class' => 'form-control', 'id', '=', 'equipo')
+        'placeholder' => 'Escoga de la bodega',
+        'attr' => array('class' => 'form-control', 'id' => 'bodega')
     ));
     
-    $builder->add('cantidad', 'text', array(
-        'required' => true,
-        "attr" => array("class" => "form-control", "id" => "cantidad")
-    ));
-    
-    $builder->add('precio', 'text', array(
-        'required' => false,
-        "attr" => array("class" => "form-control", "id" => "precio")
-    ));
-    
-    $builder->add('estado', 'choice', array(
-        'label' => 'Estado',
-        'choices' => array("Nuevo" => 'Nuevo', "Usado" => 'Usado'),
-        'attr' => array("id" => "estado", "class=" => "btn btn-default dropdown-toggle", "tabindex" => "-1", "data-toggle" => "dropdown"),
-    ));
+    $builder->add('fecha_retiro', 'text', array("label" => "Fecha retiro",
+        "data" => date('d-m-Y'), "attr" => array("class" => "datepicker",
+            "data-format" => "dd-mm-yyy"),
+        "read_only" => false,
+        'attr' => array('class' => 'form-control', 'id', '=', 'fecha_retiro')));
     
     $builder->add('maquinaria', 'model', array("label" => "Maquinaria",
         'class' => 'Colli\ControlBundle\Model\Maquinaria',
         'property' => 'Descripcion',
-        'required' => false,
         'placeholder' => 'Escoga la maquinaria',
         'attr' => array('class' => 'form-control', 'id', '=', 'maquinaria')
+    ));
+    
+    $builder->add('fecha_ingreso', 'text', array("label" => "Fecha ingreso",
+        "data" => date('d-m-Y'), "attr" => array("class" => "datepicker",
+            "data-format" => "dd-mm-yyy"),
+        "read_only" => false,
+        'attr' => array('class' => 'form-control', 'id', '=', 'fecha_ingreso')));
+    
+    $builder->add('canton', 'model', array("label" => "Canton",
+        'class' => 'Colli\ControlBundle\Model\Canton',
+        'property' => 'Descripcion',
+        'placeholder' => 'Escoga el canton',
+        'attr' => array('class' => 'form-control', 'id', '=', 'canton')
+    ));
+    
+    $builder->add('sector', 'model', array("label" => "Canton",
+        'class' => 'Colli\ControlBundle\Model\Sector',
+        'property' => 'Descripcion',
+        'placeholder' => 'Escoga el sector',
+        'attr' => array('class' => 'form-control', 'id', '=', 'sector')
     ));
     
     $builder->add("ingresar", "submit", array(

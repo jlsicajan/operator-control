@@ -44,9 +44,9 @@ class ControlBodegaTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('bodega_id', 'BodegaId', 'INTEGER', 'bodega', 'id', false, 11, null);
-        $this->addColumn('fecha_retiro', 'FechaRetiro', 'TIMESTAMP', false, null, null);
+        $this->addColumn('fecha_retiro', 'FechaRetiro', 'DATE', false, null, null);
         $this->addForeignKey('maquinaria_id', 'MaquinariaId', 'INTEGER', 'maquinaria', 'id', true, 11, null);
-        $this->addColumn('fecha_ingreso', 'FechaIngreso', 'TIMESTAMP', false, null, null);
+        $this->addColumn('fecha_ingreso', 'FechaIngreso', 'DATE', false, null, null);
         $this->addForeignKey('canton_id', 'CantonId', 'INTEGER', 'canton', 'id', false, 11, null);
         $this->addForeignKey('sector_id', 'SectorId', 'INTEGER', 'sector', 'id', false, 11, null);
         // validators

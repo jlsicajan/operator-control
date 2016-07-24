@@ -11,6 +11,8 @@ use \PropelException;
 use \PropelPDO;
 use Colli\ControlBundle\Model\Bodega;
 use Colli\ControlBundle\Model\BodegaPeer;
+use Colli\ControlBundle\Model\EquipoPeer;
+use Colli\ControlBundle\Model\MaquinariaPeer;
 use Colli\ControlBundle\Model\map\BodegaTableMap;
 
 abstract class BaseBodegaPeer
@@ -29,25 +31,31 @@ abstract class BaseBodegaPeer
     const TM_CLASS = 'Colli\\ControlBundle\\Model\\map\\BodegaTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 6;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 6;
 
     /** the column name for the id field */
     const ID = 'bodega.id';
 
-    /** the column name for the descripcion field */
-    const DESCRIPCION = 'bodega.descripcion';
+    /** the column name for the equipo_id field */
+    const EQUIPO_ID = 'bodega.equipo_id';
 
     /** the column name for the cantidad field */
     const CANTIDAD = 'bodega.cantidad';
 
     /** the column name for the precio field */
     const PRECIO = 'bodega.precio';
+
+    /** the column name for the estado field */
+    const ESTADO = 'bodega.estado';
+
+    /** the column name for the maquinaria_id field */
+    const MAQUINARIA_ID = 'bodega.maquinaria_id';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -68,12 +76,12 @@ abstract class BaseBodegaPeer
      * e.g. BodegaPeer::$fieldNames[BodegaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'Descripcion', 'Cantidad', 'Precio', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'descripcion', 'cantidad', 'precio', ),
-        BasePeer::TYPE_COLNAME => array (BodegaPeer::ID, BodegaPeer::DESCRIPCION, BodegaPeer::CANTIDAD, BodegaPeer::PRECIO, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'DESCRIPCION', 'CANTIDAD', 'PRECIO', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'descripcion', 'cantidad', 'precio', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'EquipoId', 'Cantidad', 'Precio', 'Estado', 'MaquinariaId', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'equipoId', 'cantidad', 'precio', 'estado', 'maquinariaId', ),
+        BasePeer::TYPE_COLNAME => array (BodegaPeer::ID, BodegaPeer::EQUIPO_ID, BodegaPeer::CANTIDAD, BodegaPeer::PRECIO, BodegaPeer::ESTADO, BodegaPeer::MAQUINARIA_ID, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'EQUIPO_ID', 'CANTIDAD', 'PRECIO', 'ESTADO', 'MAQUINARIA_ID', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'equipo_id', 'cantidad', 'precio', 'estado', 'maquinaria_id', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -83,12 +91,12 @@ abstract class BaseBodegaPeer
      * e.g. BodegaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Descripcion' => 1, 'Cantidad' => 2, 'Precio' => 3, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'descripcion' => 1, 'cantidad' => 2, 'precio' => 3, ),
-        BasePeer::TYPE_COLNAME => array (BodegaPeer::ID => 0, BodegaPeer::DESCRIPCION => 1, BodegaPeer::CANTIDAD => 2, BodegaPeer::PRECIO => 3, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'DESCRIPCION' => 1, 'CANTIDAD' => 2, 'PRECIO' => 3, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'descripcion' => 1, 'cantidad' => 2, 'precio' => 3, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'EquipoId' => 1, 'Cantidad' => 2, 'Precio' => 3, 'Estado' => 4, 'MaquinariaId' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'equipoId' => 1, 'cantidad' => 2, 'precio' => 3, 'estado' => 4, 'maquinariaId' => 5, ),
+        BasePeer::TYPE_COLNAME => array (BodegaPeer::ID => 0, BodegaPeer::EQUIPO_ID => 1, BodegaPeer::CANTIDAD => 2, BodegaPeer::PRECIO => 3, BodegaPeer::ESTADO => 4, BodegaPeer::MAQUINARIA_ID => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'EQUIPO_ID' => 1, 'CANTIDAD' => 2, 'PRECIO' => 3, 'ESTADO' => 4, 'MAQUINARIA_ID' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'equipo_id' => 1, 'cantidad' => 2, 'precio' => 3, 'estado' => 4, 'maquinaria_id' => 5, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
     /**
@@ -163,14 +171,18 @@ abstract class BaseBodegaPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(BodegaPeer::ID);
-            $criteria->addSelectColumn(BodegaPeer::DESCRIPCION);
+            $criteria->addSelectColumn(BodegaPeer::EQUIPO_ID);
             $criteria->addSelectColumn(BodegaPeer::CANTIDAD);
             $criteria->addSelectColumn(BodegaPeer::PRECIO);
+            $criteria->addSelectColumn(BodegaPeer::ESTADO);
+            $criteria->addSelectColumn(BodegaPeer::MAQUINARIA_ID);
         } else {
             $criteria->addSelectColumn($alias . '.id');
-            $criteria->addSelectColumn($alias . '.descripcion');
+            $criteria->addSelectColumn($alias . '.equipo_id');
             $criteria->addSelectColumn($alias . '.cantidad');
             $criteria->addSelectColumn($alias . '.precio');
+            $criteria->addSelectColumn($alias . '.estado');
+            $criteria->addSelectColumn($alias . '.maquinaria_id');
         }
     }
 
@@ -469,6 +481,637 @@ abstract class BaseBodegaPeer
         }
 
         return array($obj, $col);
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Maquinaria table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinMaquinaria(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(BodegaPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            BodegaPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(BodegaPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(BodegaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(BodegaPeer::MAQUINARIA_ID, MaquinariaPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Equipo table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinEquipo(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(BodegaPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            BodegaPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(BodegaPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(BodegaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(BodegaPeer::EQUIPO_ID, EquipoPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of Bodega objects pre-filled with their Maquinaria objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Bodega objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinMaquinaria(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(BodegaPeer::DATABASE_NAME);
+        }
+
+        BodegaPeer::addSelectColumns($criteria);
+        $startcol = BodegaPeer::NUM_HYDRATE_COLUMNS;
+        MaquinariaPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(BodegaPeer::MAQUINARIA_ID, MaquinariaPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = BodegaPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = BodegaPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = BodegaPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                BodegaPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = MaquinariaPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = MaquinariaPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = MaquinariaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    MaquinariaPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Bodega) to $obj2 (Maquinaria)
+                $obj2->addBodega($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Bodega objects pre-filled with their Equipo objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Bodega objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinEquipo(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(BodegaPeer::DATABASE_NAME);
+        }
+
+        BodegaPeer::addSelectColumns($criteria);
+        $startcol = BodegaPeer::NUM_HYDRATE_COLUMNS;
+        EquipoPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(BodegaPeer::EQUIPO_ID, EquipoPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = BodegaPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = BodegaPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = BodegaPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                BodegaPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = EquipoPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = EquipoPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = EquipoPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    EquipoPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Bodega) to $obj2 (Equipo)
+                $obj2->addBodega($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining all related tables
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAll(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(BodegaPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            BodegaPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(BodegaPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(BodegaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(BodegaPeer::MAQUINARIA_ID, MaquinariaPeer::ID, $join_behavior);
+
+        $criteria->addJoin(BodegaPeer::EQUIPO_ID, EquipoPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+    /**
+     * Selects a collection of Bodega objects pre-filled with all related objects.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Bodega objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(BodegaPeer::DATABASE_NAME);
+        }
+
+        BodegaPeer::addSelectColumns($criteria);
+        $startcol2 = BodegaPeer::NUM_HYDRATE_COLUMNS;
+
+        MaquinariaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + MaquinariaPeer::NUM_HYDRATE_COLUMNS;
+
+        EquipoPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + EquipoPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(BodegaPeer::MAQUINARIA_ID, MaquinariaPeer::ID, $join_behavior);
+
+        $criteria->addJoin(BodegaPeer::EQUIPO_ID, EquipoPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = BodegaPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = BodegaPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = BodegaPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                BodegaPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+            // Add objects for joined Maquinaria rows
+
+            $key2 = MaquinariaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            if ($key2 !== null) {
+                $obj2 = MaquinariaPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = MaquinariaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    MaquinariaPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 loaded
+
+                // Add the $obj1 (Bodega) to the collection in $obj2 (Maquinaria)
+                $obj2->addBodega($obj1);
+            } // if joined row not null
+
+            // Add objects for joined Equipo rows
+
+            $key3 = EquipoPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            if ($key3 !== null) {
+                $obj3 = EquipoPeer::getInstanceFromPool($key3);
+                if (!$obj3) {
+
+                    $cls = EquipoPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    EquipoPeer::addInstanceToPool($obj3, $key3);
+                } // if obj3 loaded
+
+                // Add the $obj1 (Bodega) to the collection in $obj3 (Equipo)
+                $obj3->addBodega($obj1);
+            } // if joined row not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Maquinaria table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptMaquinaria(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(BodegaPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            BodegaPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(BodegaPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(BodegaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(BodegaPeer::EQUIPO_ID, EquipoPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Equipo table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptEquipo(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(BodegaPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            BodegaPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(BodegaPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(BodegaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(BodegaPeer::MAQUINARIA_ID, MaquinariaPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Selects a collection of Bodega objects pre-filled with all related objects except Maquinaria.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Bodega objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptMaquinaria(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(BodegaPeer::DATABASE_NAME);
+        }
+
+        BodegaPeer::addSelectColumns($criteria);
+        $startcol2 = BodegaPeer::NUM_HYDRATE_COLUMNS;
+
+        EquipoPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + EquipoPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(BodegaPeer::EQUIPO_ID, EquipoPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = BodegaPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = BodegaPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = BodegaPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                BodegaPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Equipo rows
+
+                $key2 = EquipoPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = EquipoPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = EquipoPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    EquipoPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Bodega) to the collection in $obj2 (Equipo)
+                $obj2->addBodega($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Bodega objects pre-filled with all related objects except Equipo.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Bodega objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptEquipo(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(BodegaPeer::DATABASE_NAME);
+        }
+
+        BodegaPeer::addSelectColumns($criteria);
+        $startcol2 = BodegaPeer::NUM_HYDRATE_COLUMNS;
+
+        MaquinariaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + MaquinariaPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(BodegaPeer::MAQUINARIA_ID, MaquinariaPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = BodegaPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = BodegaPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = BodegaPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                BodegaPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined Maquinaria rows
+
+                $key2 = MaquinariaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = MaquinariaPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = MaquinariaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    MaquinariaPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Bodega) to the collection in $obj2 (Maquinaria)
+                $obj2->addBodega($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
     }
 
     /**

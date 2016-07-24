@@ -17,7 +17,12 @@ class BodegaController extends Controller {
       $form->handleRequest($request);
       if ($form->isValid()) {
         $valores = $form->getData();
-        BodegaQuery::write($valores['descripcion'], $valores['cantidad'], $valores['precio']);
+        if (isset($valores['maquinaria'])) {
+          $maquinaria = $valores['maquinaria']->getId();
+        } else {
+          $maquinaria = null;
+        }
+        BodegaQuery::write($valores['equipo']->getId(), $maquinaria, $valores['cantidad'], $valores['precio'], $valores['estado']);
         return $this->redirect($this->generateUrl('colli_control_bodega'));
       } else {
         $this->addFlash('Error', $form->getErrorsAsString());
@@ -36,7 +41,7 @@ class BodegaController extends Controller {
 
   public function changeAction(Request $request, $id) {
     $descripcion = $request->request->all();
-    $registro = BodegaQuery::edit($id, $descripcion['descripcion'], $descripcion['cantidad'], $descripcion['precio']);
+    $registro = BodegaQuery::edit($id, $descripcion['equipo']->getId(), $descripcion['maquinaria']->getId(), $descripcion['cantidad'], $descripcion['precio'], $descripcion['estado']);
     return $this->redirect($this->generateUrl('colli_control_bodega'));
   }
 
@@ -66,4 +71,5 @@ class BodegaController extends Controller {
     $response->headers->set('Content-Type', 'application/pdf');
     return $response;
   }
+
 }
