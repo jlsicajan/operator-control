@@ -47,15 +47,18 @@
                 </tfoot>
                 <tbody>
                   {% for item in control_bodega %}
-                    <tr style="cursor: pointer;" class='colli_ajax_modal' 
-                        data-destino='#modal' data-href = '{{ path('colli_control_manejo_bodega_edit', {pk: item.id}) }}'>
-                      <td>{{ item.getBodega().getDescripcion()  }}</td>
-                      <td>{{ item.FechaRetiro | date('d-m-Y') }}</td>
-                      <td>{{ item.getMaquinaria().getDescripcion()  }}</td>
-                      <td>{{ item.FechaIngreso | date('d-m-Y') }}</td>
-                      <td>{{ item.getCanton().getDescripcion()  }}</td>
-                      <td>{{ item.getSector().getDescripcion()  }}</td>
-                    </tr>
+                    {% if control_bodega|length > 1 %}
+                      <tr style="cursor: pointer;" class='colli_ajax_modal' 
+                          data-destino='#modal' data-href = '{{ path('colli_control_manejo_bodega_edit', {pk: item.id}) }}'>
+                        <td>{{ item.getBodega().getDescripcion()  }}</td>
+                        <td>{{ item.FechaRetiro | date('d-m-Y') }}</td>
+                        <td>{{ item.getMaquinaria().getDescripcion()  }}</td>
+                        <td>{{ item.FechaIngreso | date('d-m-Y') }}</td>
+                        <td>{{ item.getCanton().getDescripcion()  }}</td>
+                        <td>{{ item.getSector().getDescripcion()  }}</td>
+                      </tr>
+                    {% endif %}
+
                   {% endfor %}
                 </tbody>
               </table>
@@ -77,8 +80,8 @@
               {{ form_start(form, {'attr': {'class': 'form'}}) }}		
               <div class="col-lg-6">
                 <div class="form-group">
-                  {{ form_widget(form.bodega) }}
-                  <label for="bodega">Bodega</label>
+                  {#                  {{ form_widget(form.bodega) }}
+                                    <label for="bodega">Bodega</label>#}
                 </div>
                 <div class="form-group">
                   {{ form_widget(form.fecha_ingreso) }}

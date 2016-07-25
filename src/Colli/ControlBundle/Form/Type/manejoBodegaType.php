@@ -36,12 +36,12 @@ class manejoBodegaType extends BaseAbstractType {
 //                ->endUse(),
 //        'attr' => array('class' => 'form-control')
 //    ));
-    $builder->add('bodega', 'model', array("label" => "Bodega",
-        'class' => 'Colli\ControlBundle\Model\Bodega',
-        'property' => 'Descripcion',
-        'placeholder' => 'Escoga de la bodega',
-        'attr' => array('class' => 'form-control', 'id' => 'bodega')
-    ));
+//    $builder->add('bodega', 'model', array("label" => "Bodega",
+//        'class' => 'Colli\ControlBundle\Model\Bodega',
+//        'property' => 'descripcion',
+//        'placeholder' => 'Escoga de la bodega',
+//        'attr' => array('class' => 'form-control', 'id' => 'bodega')
+//    ));
     
     $builder->add('fecha_retiro', 'text', array("label" => "Fecha retiro",
         "data" => date('d-m-Y'), "attr" => array("class" => "datepicker",

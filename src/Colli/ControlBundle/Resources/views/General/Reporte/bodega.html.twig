@@ -1,17 +1,25 @@
 <table>
   <thead>
     <tr>
-      <th>Descripcion</th>
       <th>Cantidad</th>
+      <th>Equipo</th>
+      <th>Maquinaria</th>
       <th>Precio</th>
+      <th>Estado</th>
     </tr>
   </thead>
   <tbody>
     {% for item in bodega %}
       <tr>
-        <td>{{ item.descripcion }}</td>
         <td>{{ item.cantidad }}</td>
+        <td>{{ item.getEquipo().getDescripcion() }}</td>
+        {% if item.getMaquinaria() != null %}
+          <td>{{ item.getMaquinaria().getDescripcion() }}</td>
+        {% else %}
+          <td>No asignado</td>
+        {% endif %}
         <td>{{ item.precio }}</td>
+        <td>{{ item.estado }}</td>
       </tr>
     {% endfor%}
   </tbody>
