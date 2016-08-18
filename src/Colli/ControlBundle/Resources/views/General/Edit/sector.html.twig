@@ -1,0 +1,78 @@
+{#{% block extraScripts %}
+  <script src="{{asset('js/bootstrap-datepicker.js')}}"></script>{% endblock %}
+  {% block extraCSS %}
+    <link rel="stylesheet" href="{{asset('js/datepicker.css')}}">
+  {% endblock %}#}
+
+{% block body %}
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Editar o eliminar</h4>
+  </div>
+  <div class="modal-body">                  
+    <form style='display: inline;' class="form" role="form" action="{{ path('colli_control_sector_change', {id: datos.Id })}}" method="post">
+      <div class="form-group">    
+        <input id="regular1" type="text" name="descripcion" required="required" class="text form-control" value="{{ datos.Descripcion }}">
+        <label for="regular1">Nombre sector:</label>     
+      </div>
+      <div class="form-group">
+        <input id="ancho" type="text" name="ancho" required="required" class="text form-control" value="{{ datos.Ancho }}">
+        <label for="ancho">Ancho:</label>
+        <select id="sector_unidad_ancho" name="unidad_ancho"btn-default="" 
+                dropdown-toggle="" tabindex="-1">  
+          {% if datos.MedidaAncho == 'Metros' %}
+            <option value="Metros" selected>Metros</option>            
+            <option value="Kilometros">Kilometros</option>            
+            <option value="Pies">Pies</option>
+          {% elseif datos.MedidaAncho == 'Kilometros' %}
+            <option value="Metros">Metros</option>            
+            <option value="Kilometros" selected>Kilometros</option>            
+            <option value="Pies">Pies</option>
+          {% elseif datos.MedidaAncho == 'Pies' %}
+            <option value="Metros">Metros</option>            
+            <option value="Kilometros">Kilometros</option>            
+            <option value="Pies" selected>Pies</option>
+          {% endif%}       
+        </select>
+      </div>   
+      <div class="form-group">
+        <input id="largo" type="text" name="largo" required="required" class="text form-control" value="{{ datos.Largo }}">
+        <label for="largo">Largo:</label>   
+        <select id="sector_unidad_largo" name="unidad_largo" btn-default="" 
+                dropdown-toggle="" tabindex="-1">  
+          {% if datos.MedidaLargo == 'Metros' %}
+            <option value="Metros" selected>Metros</option>            
+            <option value="Kilometros">Kilometros</option>            
+            <option value="Pies">Pies</option>
+          {% elseif datos.MedidaLargo == 'Kilometros' %}
+            <option value="Metros">Metros</option>            
+            <option value="Kilometros" selected>Kilometros</option>            
+            <option value="Pies">Pies</option>
+          {% elseif datos.MedidaLargo == 'Pies' %}
+            <option value="Metros">Metros</option>            
+            <option value="Kilometros">Kilometros</option>            
+            <option value="Pies" selected>Pies</option>
+          {% endif%}       
+        </select>
+      </div>      
+      <div class="form-group">
+        {#        <input id="canton" type="text" name="canton" required="required" class="text form-control" value="{{ datos.getCanton().Descripcion }}">#}
+        <label for="canton">Perteneciente al canton:</label>  
+        <select id="canton" name="canton" class="form-control" btn-default="" 
+                dropdown-toggle="" tabindex="-1" data-toggle="dropdown">  
+          {% for canton in cantones %}
+            {% if canton.id == datos.getCanton().Id %}
+              <option value="{{ canton.id }}" selected>{{ canton.descripcion }}</option>            
+            {% else %}
+              <option value="{{ canton.id }}">{{ canton.descripcion }}</option>            
+            {% endif%}     
+          {% endfor%}
+        </select>
+      </div>
+      <div class="modal-footer">
+        <input class='btn btn-primary' type='submit' name="edit[btn]" value='Editar'>
+        </form>
+        <a href="{{ path('colli_control_sector_delete', {id: datos.Id })}}" type="button" class="btn ink-reaction btn-danger">Eliminar</a>
+      </div>
+  </div>
+{% endblock %} 

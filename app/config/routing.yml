@@ -1,0 +1,8 @@
+consultas:
+    resource: "@ConsultasBundle/Resources/config/routing.yml"
+    prefix:   /
+
+#-------------------------------------Coollisoft control bundle---------------------#
+colli_control:
+    resource: "@ColliControlBundle/Resources/config/routing.yml"
+    prefix:   /

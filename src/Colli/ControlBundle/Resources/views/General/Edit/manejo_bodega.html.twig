@@ -1,0 +1,81 @@
+{% block body %}
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Editar o eliminar</h4>
+  </div>
+  <div class="modal-body"> 
+    <form style='display: inline;' class="form" role="form" action="{{ path('colli_control_manejo_bodega_change', {id: datos.Id })}}" method="post">
+
+      <div class="table-responsive">	
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="canton">Bodega:</label>  
+            <select id="bodega" name="bodega" class="form-control" btn-default="" 
+                    dropdown-toggle="" tabindex="-1" data-toggle="dropdown">  
+              {% for bodega in bodegas %}
+                {% if bodega.id == datos.getBodega().Id %}
+                  <option value="{{ bodega.id }}" selected>{{ bodega.descripcion }}</option>            
+                {% else %}
+                  <option value="{{ bodega.id }}">{{ bodega.descripcion }}</option>            
+                {% endif%}     
+              {% endfor%}
+            </select>
+          </div>
+          <div class="form-group">
+            <input id="fecha_ingreso" type="text" name="fecha_ingreso" required="required" class="text form-control" value="{{ datos.FechaIngreso | date('d-m-Y') }}">
+            <label for="fecha_ingreso">Fecha ingreso:</label>     
+          </div>    
+          <div class="form-group">
+            <label for="canton">Maquinaria:</label>  
+            <select id="maquinaria" name="maquinaria" class="form-control" btn-default="" 
+                    dropdown-toggle="" tabindex="-1" data-toggle="dropdown">  
+              {% for maquinaria in maquinarias %}
+                {% if maquinaria.id == datos.getMaquinaria().Id %}
+                  <option value="{{ maquinaria.id }}" selected>{{ maquinaria.descripcion }}</option>            
+                {% else %}
+                  <option value="{{ maquinaria.id }}">{{ maquinaria.descripcion }}</option>            
+                {% endif%}     
+              {% endfor%}
+            </select>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-group">
+            <label for="canton">Perteneciente al canton:</label>  
+            <select id="canton" name="canton" class="form-control" btn-default="" 
+                    dropdown-toggle="" tabindex="-1" data-toggle="dropdown">  
+              {% for canton in cantones %}
+                {% if canton.id == datos.getCanton().Id %}
+                  <option value="{{ canton.id }}" selected>{{ canton.descripcion }}</option>            
+                {% else %}
+                  <option value="{{ canton.id }}">{{ canton.descripcion }}</option>            
+                {% endif%}     
+              {% endfor%}
+            </select>
+          </div>
+          <div class="form-group">    
+            <input id="fecha_retiro" type="text" name="fecha_retiro" required="required" class="text form-control" value="{{ datos.FechaRetiro | date('d-m-Y') }}">
+            <label for="fecha_retiro">Fecha retiro:</label>     
+          </div>  
+          <div class="form-group">
+            <label for="sector">Perteneciente al sector:</label>  
+            <select id="sector" name="sector" class="form-control" btn-default="" 
+                    dropdown-toggle="" tabindex="-1" data-toggle="dropdown">  
+              {% for sector in sectores %}
+                {% if sector.id == datos.getSector().Id %}
+                  <option value="{{ sector.id }}" selected>{{ sector.descripcion }}</option>            
+                {% else %}
+                  <option value="{{ sector.id }}">{{ sector.descripcion }}</option>            
+                {% endif%}     
+              {% endfor%}
+            </select>
+          </div>
+        </div>									
+      </div>
+      <div class="modal-footer">
+        <input class='btn btn-primary' type='submit' name="edit[btn]" value='Editar'>
+        </form>
+        <a href="{{ path('colli_control_manejo_bodega_delete', {id: datos.Id })}}" type="button" class="btn ink-reaction btn-danger">Eliminar</a>
+      </div>
+  </div>
+{% endblock %} 

@@ -1,0 +1,24 @@
+{#{% block extraScripts %}
+  <script src="{{asset('js/bootstrap-datepicker.js')}}"></script>{% endblock %}
+  {% block extraCSS %}
+    <link rel="stylesheet" href="{{asset('js/datepicker.css')}}">
+  {% endblock %}#}
+
+{% block body %}
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Editar o eliminar</h4>
+  </div>
+  <div class="modal-body">                  
+    <form style='display: inline;' class="form" role="form" action="{{ path('colli_control_canton_change', {pk: datos.Id })}}" method="post">
+      <div class="form-group">    
+        <input id="regular1" type="text" name="edit[proceso]" required="required" class="text form-control" value="{{ datos.Descripcion }}">
+        <label for="regular1">Nombre canton:</label>     
+      </div>
+      <div class="modal-footer">
+        <input class='btn btn-primary' type='submit' name="edit[btn]" value='Editar'>
+        </form>
+        <a href="{{ path('colli_control_canton_delete', {id: datos.Id })}}" type="button" class="btn ink-reaction btn-danger">Eliminar</a>
+      </div>
+  </div>
+{% endblock %} 

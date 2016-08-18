@@ -1,0 +1,35 @@
+{% for canton in cantones %}     
+  <h2>{{ canton.descripcion }}</h2>
+  <table>
+    <thead>
+      <tr>
+        <th class="titulo">Nombre sector</th>
+        <th class="titulo">Ancho</th>
+        <th class="titulo">Largo</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for sector in sectores %}
+        {% if canton.id == sector.getCanton().getId() %}
+          <tr>
+            <td>{{ sector.descripcion }}</td>
+            <td>{{ sector.ancho }}  {{ sector.medidaAncho }}</td>
+            <td>{{ sector.largo }}  {{ sector.medidaLargo }}</td>
+          </tr>
+        {% endif%}
+      {% endfor%}
+    </tbody>
+  </table>
+{% endfor%}
+<style>
+  table, td, th {
+    border: 1px solid black;
+  }
+  .titulo {
+    font-size: 11px;
+  }
+  th {
+    background-color: black;
+    color: white;
+  }
+</style>

@@ -1,0 +1,83 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Cantones{% endblock %}
+{% block body %}
+  <div class="row">
+    <div class="col-md-9">
+      <div class="card ">
+        <div class="row">
+          <div class="card-head">
+            <header>Listado de cantones</header>
+          </div>
+          <div class="card-body height-13">
+            <div class="table-responsive">
+              <table id="data_table_simple" class="display" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>Nombre canton</th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <th>Nombre canton</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  {% for item in cantones %}
+                    <tr>
+                      <td style="cursor: pointer;" class='colli_ajax_modal' 
+                          data-destino='#modal' data-href = '{{ path('colli_control_canton_edit', {pk: item.id}) }}'>{{ item.descripcion }}</td>
+                    </tr>
+                  {% endfor%}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-head">
+          <header class="text-primary">Ingresar nuevo canton</header>
+        </div>
+        <div class="card-body height-4">
+          {{ form_start(form, {'attr': {'class': 'form'}}) }}											
+          <div class="form-group">
+            {{ form_widget(form.descripcion) }}
+            <label for="regular1">Nombre canton</label>
+          </div>
+          {{ form_end(form) }}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <header class="text-primary">Imprimir reportes</header>
+        </div>
+        <div class="card-body height-4">
+          <a 
+            class="btn btn-block ink-reaction btn-success"
+            href="{{ path('colli_control_canton_pdf') }}">
+            <i class="md md-receipt">
+            </i>
+            GENERAR EXCEL
+          </a>
+          <a 
+            class="btn btn-block ink-reaction btn-danger"
+            href="{{ path('colli_control_canton_pdf') }}">
+            <i class="glyphicon glyphicon-th-list">
+            </i>
+            GENERAR PDF
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class='modal fade custom-width col-md-6' id ='modal'data-backdrop="static">
+      <div class="modal-dialog" style='width: 90%'>
+        <div class="modal-content">
+          Cargando Informacion ...
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

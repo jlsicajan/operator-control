@@ -1,0 +1,139 @@
+colli_control_homepage:
+    path:     /
+    defaults: { _controller: ColliControlBundle:Canton:index }
+
+colli_control_canton:
+    path:     /canton
+    defaults: { _controller: ColliControlBundle:Canton:canton }
+
+colli_control_sectores:
+    path:     /sector
+    defaults: { _controller: ColliControlBundle:Sector:sector }
+    
+colli_control_maquinaria:
+    path:     /maquinaria
+    defaults: { _controller: ColliControlBundle:Maquinaria:maquinaria }
+
+colli_control_bodega:
+    path:     /bodega
+    defaults: { _controller: ColliControlBundle:Bodega:bodega }
+
+colli_control_equipo:
+    path:     /equipo
+    defaults: { _controller: ColliControlBundle:Equipo:equipo }
+
+colli_control_bodega_manejo:
+    path:     /ingreso/bodega
+    defaults: { _controller: ColliControlBundle:ManejoBodega:bodega }
+
+colli_control_ingresar_datos:
+    path:     /control/ingreso
+    defaults: { _controller: ColliControlBundle:Ingresar:ingreso }
+
+colli_control_trabajadores:
+    path:     /trabajadores
+    defaults: { _controller: ColliControlBundle:Trabajadores:index }
+
+colli_control_trabajadores_control:
+    path:     /control/trabajadores
+    defaults: { _controller: ColliControlBundle:TrabajadoresControl:index }
+#--------------------------------------- edit and delete -----------------------
+colli_control_canton_edit:
+    path:     /canton/{pk}
+    defaults: { _controller: ColliControlBundle:Canton:editCanton }
+    
+colli_control_trabajador_edit:
+    path:     /trabajador/{pk}
+    defaults: { _controller: ColliControlBundle:Trabajadores:editTrabajador }
+    
+colli_control_canton_delete:
+    path:     /canton/eliminar/{id}
+    defaults: { _controller: ColliControlBundle:Canton:eliminar }
+    
+colli_control_sector_edit:
+    path:     /sector/{pk}
+    defaults: { _controller: ColliControlBundle:Sector:editSector }
+    
+colli_control_sector_delete:
+    path:     /sector/eliminar/{id}
+    defaults: { _controller: ColliControlBundle:Sector:eliminar }
+
+colli_control_maquinaria_edit:
+    path:     /maquinaria/{pk}
+    defaults: { _controller: ColliControlBundle:Maquinaria:editMaquinaria }
+    
+colli_control_maquinaria_delete:
+    path:     /maquinaria/eliminar/{id}
+    defaults: { _controller: ColliControlBundle:Maquinaria:eliminar }
+
+colli_control_bodega_edit:
+    path:     /bodega/{pk}
+    defaults: { _controller: ColliControlBundle:Bodega:editBodega }
+    
+colli_control_bodega_delete:
+    path:     /bodega/eliminar/{id}
+    defaults: { _controller: ColliControlBundle:Bodega:eliminar }
+
+colli_control_equipo_edit:
+    path:     /equipo/{pk}
+    defaults: { _controller: ColliControlBundle:Equipo:editEquipo }
+    
+colli_control_equipo_delete:
+    path:     /equipo/eliminar/{id}
+    defaults: { _controller: ColliControlBundle:Equipo:eliminar }
+
+colli_control_manejo_bodega_edit:
+    path:     /manejo/{pk}
+    defaults: { _controller: ColliControlBundle:ManejoBodega:editBodega }
+    
+colli_control_manejo_bodega_delete:
+    path:     /manejo/eliminar/{id}
+    defaults: { _controller: ColliControlBundle:ManejoBodega:eliminar }
+#--------------------------------------- change --------------------------------
+colli_control_canton_change:
+    path:     /canton/change/{pk}
+    defaults: { _controller: ColliControlBundle:Canton:change }
+    
+colli_control_sector_change:
+    path:     /sector/change/{id}
+    defaults: { _controller: ColliControlBundle:Sector:change }
+
+colli_control_maquinaria_change:
+    path:     /maquinaria/change/{id}
+    defaults: { _controller: ColliControlBundle:Maquinaria:change }
+
+colli_control_bodega_change:
+    path:     /bodega/change/{id}
+    defaults: { _controller: ColliControlBundle:Bodega:change }
+
+colli_control_equipo_change:
+    path:     /equipo/change/{id}
+    defaults: { _controller: ColliControlBundle:Equipo:change }
+
+colli_control_manejo_bodega_change:
+    path:     /manejo/change/{id}
+    defaults: { _controller: ColliControlBundle:ManejoBodega:change }
+
+colli_control_trabajador_change:
+    path:     /trabajadores/change/{id}
+    defaults: { _controller: ColliControlBundle:Trabajadores:change }
+#----------------------------------- reporte canton ----------------------------
+colli_control_canton_pdf:
+    path:     /canton/reporte/pdf
+    defaults: { _controller: ColliControlBundle:Canton:crearPdf }
+    
+colli_control_sector_pdf:
+    path:     /sector/reporte/pdf
+    defaults: { _controller: ColliControlBundle:Sector:crearPdf }
+
+colli_control_maquinaria_pdf:
+    path:     /maquinaria/reporte/pdf
+    defaults: { _controller: ColliControlBundle:Maquinaria:crearPdf }
+
+colli_control_bodega_pdf:
+    path:     /bodega/reporte/pdf
+    defaults: { _controller: ColliControlBundle:Bodega:crearPdf }
+
+colli_control_manejo_bodega_pdf:
+    path:     /manejo/reporte/pdf
+    defaults: { _controller: ColliControlBundle:ManejoBodega:crearPdf }
