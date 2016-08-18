@@ -89,6 +89,10 @@ colli_control_manejo_bodega_edit:
 colli_control_manejo_bodega_delete:
     path:     /manejo/eliminar/{id}
     defaults: { _controller: ColliControlBundle:ManejoBodega:eliminar }
+
+colli_control_trabajador_delete:
+    path:     /trabajadores/eliminar/{id}
+    defaults: { _controller: ColliControlBundle:Trabajadores:eliminar }
 #--------------------------------------- change --------------------------------
 colli_control_canton_change:
     path:     /canton/change/{pk}
