@@ -141,3 +141,7 @@ colli_control_bodega_pdf:
 colli_control_manejo_bodega_pdf:
     path:     /manejo/reporte/pdf
     defaults: { _controller: ColliControlBundle:ManejoBodega:crearPdf }
+
+colli_control_trabajadores_pdf:
+    path:     /trabajadores/reporte/pdf
+    defaults: { _controller: ColliControlBundle:Trabajadores:crearPdf }

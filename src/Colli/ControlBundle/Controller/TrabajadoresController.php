@@ -7,6 +7,7 @@ use Colli\ControlBundle\Model\TrabajadorPeer;
 use Colli\ControlBundle\Model\TrabajadorQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TrabajadoresController extends Controller {
 
@@ -46,16 +47,16 @@ class TrabajadoresController extends Controller {
   }
 
   public function crearPdfAction() {
-    $bodega = BodegaPeer::getListado(null);
-    $context = array('bodega' => $bodega);
-    $html = $this->renderView('ColliControlBundle:General/Reporte:bodega.html.twig', $context);
-    $fname = 'Bodega_' . date("Ymd-His") . ".pdf";
+    $trabajadores = TrabajadorPeer::getListado(null);
+    $context = array('trabajadores' => $trabajadores);
+    $html = $this->renderView('ColliControlBundle:General/Reporte:trabajadores.html.twig', $context);
+    $fname = 'Trabajadores_' . date("Ymd-His") . ".pdf";
     $pdf = $this->get('white_october.tcpdf')->create();
     $pdf->SetAuthor('Fabian Sicajan');
-    $pdf->SetTitle('Bodega');
-    $pdf->SetSubject('Bodega');
-    $pdf->SetKeywords('Bodega');
-    $pdf->setHeaderData('', 0, 'Bodega', 'Bodega');
+    $pdf->SetTitle('Trabajadores');
+    $pdf->SetSubject('Trabajadores');
+    $pdf->SetKeywords('Trabajadores');
+    $pdf->setHeaderData('', 0, 'Trabajadores', 'Trabajadores');
     $pdf->setHeaderMargin(4);
     $pdf->setTopMargin(18);
     $pdf->AddPage('L');
