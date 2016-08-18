@@ -45,25 +45,25 @@ class TrabajadoresController extends Controller {
     return $this->redirect($this->generateUrl('colli_control_trabajadores'));
   }
 
-//  public function crearPdfAction() {
-//    $bodega = BodegaPeer::getListado(null);
-//    $context = array('bodega' => $bodega);
-//    $html = $this->renderView('ColliControlBundle:General/Reporte:bodega.html.twig', $context);
-//    $fname = 'Bodega_' . date("Ymd-His") . ".pdf";
-//    $pdf = $this->get('white_october.tcpdf')->create();
-//    $pdf->SetAuthor('Fabian Sicajan');
-//    $pdf->SetTitle('Bodega');
-//    $pdf->SetSubject('Bodega');
-//    $pdf->SetKeywords('Bodega');
-//    $pdf->setHeaderData('', 0, 'Bodega', 'Bodega');
-//    $pdf->setHeaderMargin(4);
-//    $pdf->setTopMargin(18);
-//    $pdf->AddPage('L');
-//    $pdf->setFont('Freesans', 'N', 8);
-//    $pdf->writeHTML($html, true, false, true, false, '');
-//    $pdf->lastPage();
-//    $response = new Response($pdf->Output($fname, 'D'));
-//    $response->headers->set('Content-Type', 'application/pdf');
-//    return $response;
-//  }
+  public function crearPdfAction() {
+    $bodega = BodegaPeer::getListado(null);
+    $context = array('bodega' => $bodega);
+    $html = $this->renderView('ColliControlBundle:General/Reporte:bodega.html.twig', $context);
+    $fname = 'Bodega_' . date("Ymd-His") . ".pdf";
+    $pdf = $this->get('white_october.tcpdf')->create();
+    $pdf->SetAuthor('Fabian Sicajan');
+    $pdf->SetTitle('Bodega');
+    $pdf->SetSubject('Bodega');
+    $pdf->SetKeywords('Bodega');
+    $pdf->setHeaderData('', 0, 'Bodega', 'Bodega');
+    $pdf->setHeaderMargin(4);
+    $pdf->setTopMargin(18);
+    $pdf->AddPage('L');
+    $pdf->setFont('Freesans', 'N', 8);
+    $pdf->writeHTML($html, true, false, true, false, '');
+    $pdf->lastPage();
+    $response = new Response($pdf->Output($fname, 'D'));
+    $response->headers->set('Content-Type', 'application/pdf');
+    return $response;
+  }
 }
