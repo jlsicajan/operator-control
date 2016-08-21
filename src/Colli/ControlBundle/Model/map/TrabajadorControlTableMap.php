@@ -43,6 +43,7 @@ class TrabajadorControlTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addColumn('fecha_ingreso', 'FechaIngreso', 'DATE', false, null, null);
         $this->addForeignKey('trabajador_id', 'TrabajadorId', 'VARCHAR', 'trabajador', 'id', false, 15, null);
         $this->addColumn('tarea', 'Tarea', 'VARCHAR', false, 250, null);
         // validators

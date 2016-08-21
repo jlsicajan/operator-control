@@ -5,10 +5,12 @@ namespace Colli\ControlBundle\Model\om;
 use \BaseObject;
 use \BasePeer;
 use \Criteria;
+use \DateTime;
 use \Exception;
 use \PDO;
 use \Persistent;
 use \Propel;
+use \PropelDateTime;
 use \PropelException;
 use \PropelPDO;
 use Colli\ControlBundle\Model\Trabajador;
@@ -43,6 +45,12 @@ abstract class BaseTrabajadorControl extends BaseObject implements Persistent
      * @var        int
      */
     protected $id;
+
+    /**
+     * The value for the fecha_ingreso field.
+     * @var        string
+     */
+    protected $fecha_ingreso;
 
     /**
      * The value for the trabajador_id field.
@@ -93,6 +101,46 @@ abstract class BaseTrabajadorControl extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [optionally formatted] temporal [fecha_ingreso] column value.
+     *
+     *
+     * @param string $format The date/time format string (either date()-style or strftime()-style).
+     *				 If format is null, then the raw DateTime object will be returned.
+     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00
+     * @throws PropelException - if unable to parse/validate the date/time value.
+     */
+    public function getFechaIngreso($format = null)
+    {
+        if ($this->fecha_ingreso === null) {
+            return null;
+        }
+
+        if ($this->fecha_ingreso === '0000-00-00') {
+            // while technically this is not a default value of null,
+            // this seems to be closest in meaning.
+            return null;
+        }
+
+        try {
+            $dt = new DateTime($this->fecha_ingreso);
+        } catch (Exception $x) {
+            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->fecha_ingreso, true), $x);
+        }
+
+        if ($format === null) {
+            // Because propel.useDateTimeClass is true, we return a DateTime object.
+            return $dt;
+        }
+
+        if (strpos($format, '%') !== false) {
+            return strftime($format, $dt->format('U'));
+        }
+
+        return $dt->format($format);
+
+    }
+
+    /**
      * Get the [trabajador_id] column value.
      *
      * @return string
@@ -134,6 +182,29 @@ abstract class BaseTrabajadorControl extends BaseObject implements Persistent
 
         return $this;
     } // setId()
+
+    /**
+     * Sets the value of [fecha_ingreso] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return TrabajadorControl The current object (for fluent API support)
+     */
+    public function setFechaIngreso($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->fecha_ingreso !== null || $dt !== null) {
+            $currentDateAsString = ($this->fecha_ingreso !== null && $tmpDt = new DateTime($this->fecha_ingreso)) ? $tmpDt->format('Y-m-d') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->fecha_ingreso = $newDateAsString;
+                $this->modifiedColumns[] = TrabajadorControlPeer::FECHA_INGRESO;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setFechaIngreso()
 
     /**
      * Set the value of [trabajador_id] column.
@@ -214,8 +285,9 @@ abstract class BaseTrabajadorControl extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->trabajador_id = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->tarea = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->fecha_ingreso = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+            $this->trabajador_id = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->tarea = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -225,7 +297,7 @@ abstract class BaseTrabajadorControl extends BaseObject implements Persistent
             }
             $this->postHydrate($row, $startcol, $rehydrate);
 
-            return $startcol + 3; // 3 = TrabajadorControlPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = TrabajadorControlPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating TrabajadorControl object", $e);
@@ -456,6 +528,9 @@ abstract class BaseTrabajadorControl extends BaseObject implements Persistent
         if ($this->isColumnModified(TrabajadorControlPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`id`';
         }
+        if ($this->isColumnModified(TrabajadorControlPeer::FECHA_INGRESO)) {
+            $modifiedColumns[':p' . $index++]  = '`fecha_ingreso`';
+        }
         if ($this->isColumnModified(TrabajadorControlPeer::TRABAJADOR_ID)) {
             $modifiedColumns[':p' . $index++]  = '`trabajador_id`';
         }
@@ -475,6 +550,9 @@ abstract class BaseTrabajadorControl extends BaseObject implements Persistent
                 switch ($columnName) {
                     case '`id`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case '`fecha_ingreso`':
+                        $stmt->bindValue($identifier, $this->fecha_ingreso, PDO::PARAM_STR);
                         break;
                     case '`trabajador_id`':
                         $stmt->bindValue($identifier, $this->trabajador_id, PDO::PARAM_STR);
@@ -632,9 +710,12 @@ abstract class BaseTrabajadorControl extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getTrabajadorId();
+                return $this->getFechaIngreso();
                 break;
             case 2:
+                return $this->getTrabajadorId();
+                break;
+            case 3:
                 return $this->getTarea();
                 break;
             default:
@@ -667,8 +748,9 @@ abstract class BaseTrabajadorControl extends BaseObject implements Persistent
         $keys = TrabajadorControlPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getTrabajadorId(),
-            $keys[2] => $this->getTarea(),
+            $keys[1] => $this->getFechaIngreso(),
+            $keys[2] => $this->getTrabajadorId(),
+            $keys[3] => $this->getTarea(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -717,9 +799,12 @@ abstract class BaseTrabajadorControl extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setTrabajadorId($value);
+                $this->setFechaIngreso($value);
                 break;
             case 2:
+                $this->setTrabajadorId($value);
+                break;
+            case 3:
                 $this->setTarea($value);
                 break;
         } // switch()
@@ -747,8 +832,9 @@ abstract class BaseTrabajadorControl extends BaseObject implements Persistent
         $keys = TrabajadorControlPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setTrabajadorId($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setTarea($arr[$keys[2]]);
+        if (array_key_exists($keys[1], $arr)) $this->setFechaIngreso($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setTrabajadorId($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setTarea($arr[$keys[3]]);
     }
 
     /**
@@ -761,6 +847,7 @@ abstract class BaseTrabajadorControl extends BaseObject implements Persistent
         $criteria = new Criteria(TrabajadorControlPeer::DATABASE_NAME);
 
         if ($this->isColumnModified(TrabajadorControlPeer::ID)) $criteria->add(TrabajadorControlPeer::ID, $this->id);
+        if ($this->isColumnModified(TrabajadorControlPeer::FECHA_INGRESO)) $criteria->add(TrabajadorControlPeer::FECHA_INGRESO, $this->fecha_ingreso);
         if ($this->isColumnModified(TrabajadorControlPeer::TRABAJADOR_ID)) $criteria->add(TrabajadorControlPeer::TRABAJADOR_ID, $this->trabajador_id);
         if ($this->isColumnModified(TrabajadorControlPeer::TAREA)) $criteria->add(TrabajadorControlPeer::TAREA, $this->tarea);
 
@@ -826,6 +913,7 @@ abstract class BaseTrabajadorControl extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setFechaIngreso($this->getFechaIngreso());
         $copyObj->setTrabajadorId($this->getTrabajadorId());
         $copyObj->setTarea($this->getTarea());
 
@@ -944,6 +1032,7 @@ abstract class BaseTrabajadorControl extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
+        $this->fecha_ingreso = null;
         $this->trabajador_id = null;
         $this->tarea = null;
         $this->alreadyInSave = false;

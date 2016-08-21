@@ -105,7 +105,8 @@
   </table>
 
   <table name="trabajador_control">
-    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />   
+    <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />  
+    <column name="fecha_ingreso" type="varchar"/> 
     <column name="trabajador_id" type="varchar" required="false" size="15" />   
     <column name="tarea" type="varchar" required="false" size="250" /> 
     <foreign-key foreignTable="trabajador">

@@ -19,10 +19,12 @@ use Colli\ControlBundle\Model\TrabajadorControlQuery;
 
 /**
  * @method TrabajadorControlQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method TrabajadorControlQuery orderByFechaIngreso($order = Criteria::ASC) Order by the fecha_ingreso column
  * @method TrabajadorControlQuery orderByTrabajadorId($order = Criteria::ASC) Order by the trabajador_id column
  * @method TrabajadorControlQuery orderByTarea($order = Criteria::ASC) Order by the tarea column
  *
  * @method TrabajadorControlQuery groupById() Group by the id column
+ * @method TrabajadorControlQuery groupByFechaIngreso() Group by the fecha_ingreso column
  * @method TrabajadorControlQuery groupByTrabajadorId() Group by the trabajador_id column
  * @method TrabajadorControlQuery groupByTarea() Group by the tarea column
  *
@@ -37,10 +39,12 @@ use Colli\ControlBundle\Model\TrabajadorControlQuery;
  * @method TrabajadorControl findOne(PropelPDO $con = null) Return the first TrabajadorControl matching the query
  * @method TrabajadorControl findOneOrCreate(PropelPDO $con = null) Return the first TrabajadorControl matching the query, or a new TrabajadorControl object populated from the query conditions when no match is found
  *
+ * @method TrabajadorControl findOneByFechaIngreso(string $fecha_ingreso) Return the first TrabajadorControl filtered by the fecha_ingreso column
  * @method TrabajadorControl findOneByTrabajadorId(string $trabajador_id) Return the first TrabajadorControl filtered by the trabajador_id column
  * @method TrabajadorControl findOneByTarea(string $tarea) Return the first TrabajadorControl filtered by the tarea column
  *
  * @method array findById(int $id) Return TrabajadorControl objects filtered by the id column
+ * @method array findByFechaIngreso(string $fecha_ingreso) Return TrabajadorControl objects filtered by the fecha_ingreso column
  * @method array findByTrabajadorId(string $trabajador_id) Return TrabajadorControl objects filtered by the trabajador_id column
  * @method array findByTarea(string $tarea) Return TrabajadorControl objects filtered by the tarea column
  */
@@ -148,7 +152,7 @@ abstract class BaseTrabajadorControlQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `id`, `trabajador_id`, `tarea` FROM `trabajador_control` WHERE `id` = :p0';
+        $sql = 'SELECT `id`, `fecha_ingreso`, `trabajador_id`, `tarea` FROM `trabajador_control` WHERE `id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -277,6 +281,49 @@ abstract class BaseTrabajadorControlQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(TrabajadorControlPeer::ID, $id, $comparison);
+    }
+
+    /**
+     * Filter the query on the fecha_ingreso column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFechaIngreso('2011-03-14'); // WHERE fecha_ingreso = '2011-03-14'
+     * $query->filterByFechaIngreso('now'); // WHERE fecha_ingreso = '2011-03-14'
+     * $query->filterByFechaIngreso(array('max' => 'yesterday')); // WHERE fecha_ingreso < '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $fechaIngreso The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return TrabajadorControlQuery The current query, for fluid interface
+     */
+    public function filterByFechaIngreso($fechaIngreso = null, $comparison = null)
+    {
+        if (is_array($fechaIngreso)) {
+            $useMinMax = false;
+            if (isset($fechaIngreso['min'])) {
+                $this->addUsingAlias(TrabajadorControlPeer::FECHA_INGRESO, $fechaIngreso['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($fechaIngreso['max'])) {
+                $this->addUsingAlias(TrabajadorControlPeer::FECHA_INGRESO, $fechaIngreso['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(TrabajadorControlPeer::FECHA_INGRESO, $fechaIngreso, $comparison);
     }
 
     /**

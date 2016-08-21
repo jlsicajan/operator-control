@@ -30,16 +30,19 @@ abstract class BaseTrabajadorControlPeer
     const TM_CLASS = 'Colli\\ControlBundle\\Model\\map\\TrabajadorControlTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 4;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /** the column name for the id field */
     const ID = 'trabajador_control.id';
+
+    /** the column name for the fecha_ingreso field */
+    const FECHA_INGRESO = 'trabajador_control.fecha_ingreso';
 
     /** the column name for the trabajador_id field */
     const TRABAJADOR_ID = 'trabajador_control.trabajador_id';
@@ -66,12 +69,12 @@ abstract class BaseTrabajadorControlPeer
      * e.g. TrabajadorControlPeer::$fieldNames[TrabajadorControlPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'TrabajadorId', 'Tarea', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'trabajadorId', 'tarea', ),
-        BasePeer::TYPE_COLNAME => array (TrabajadorControlPeer::ID, TrabajadorControlPeer::TRABAJADOR_ID, TrabajadorControlPeer::TAREA, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TRABAJADOR_ID', 'TAREA', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'trabajador_id', 'tarea', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'FechaIngreso', 'TrabajadorId', 'Tarea', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'fechaIngreso', 'trabajadorId', 'tarea', ),
+        BasePeer::TYPE_COLNAME => array (TrabajadorControlPeer::ID, TrabajadorControlPeer::FECHA_INGRESO, TrabajadorControlPeer::TRABAJADOR_ID, TrabajadorControlPeer::TAREA, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'FECHA_INGRESO', 'TRABAJADOR_ID', 'TAREA', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'fecha_ingreso', 'trabajador_id', 'tarea', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -81,12 +84,12 @@ abstract class BaseTrabajadorControlPeer
      * e.g. TrabajadorControlPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'TrabajadorId' => 1, 'Tarea' => 2, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'trabajadorId' => 1, 'tarea' => 2, ),
-        BasePeer::TYPE_COLNAME => array (TrabajadorControlPeer::ID => 0, TrabajadorControlPeer::TRABAJADOR_ID => 1, TrabajadorControlPeer::TAREA => 2, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TRABAJADOR_ID' => 1, 'TAREA' => 2, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'trabajador_id' => 1, 'tarea' => 2, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'FechaIngreso' => 1, 'TrabajadorId' => 2, 'Tarea' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'fechaIngreso' => 1, 'trabajadorId' => 2, 'tarea' => 3, ),
+        BasePeer::TYPE_COLNAME => array (TrabajadorControlPeer::ID => 0, TrabajadorControlPeer::FECHA_INGRESO => 1, TrabajadorControlPeer::TRABAJADOR_ID => 2, TrabajadorControlPeer::TAREA => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'FECHA_INGRESO' => 1, 'TRABAJADOR_ID' => 2, 'TAREA' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'fecha_ingreso' => 1, 'trabajador_id' => 2, 'tarea' => 3, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -161,10 +164,12 @@ abstract class BaseTrabajadorControlPeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(TrabajadorControlPeer::ID);
+            $criteria->addSelectColumn(TrabajadorControlPeer::FECHA_INGRESO);
             $criteria->addSelectColumn(TrabajadorControlPeer::TRABAJADOR_ID);
             $criteria->addSelectColumn(TrabajadorControlPeer::TAREA);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.fecha_ingreso');
             $criteria->addSelectColumn($alias . '.trabajador_id');
             $criteria->addSelectColumn($alias . '.tarea');
         }

@@ -1,0 +1,41 @@
+{% block body %}
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Editar o eliminar</h4>
+  </div>
+  <div class="modal-body">                  
+    <form style='display: inline;' class="form" role="form" action="{{ path('colli_trabajador_control_change', {id: datos.Id })}}" method="post">
+      <div class="form-group">
+        <input type="text" id="trabajador_control_fecha" name="fecha" required="required" 
+               class="datepicker" data-format="dd-mm-yyyy" value="{{ datos.getFechaIngreso().format('d-m-Y') }}" data="{{ datos.getFechaIngreso().format('d-m-yyyy') }}">
+        <label for="fecha">Fecha:</label>
+      </div>
+      <div class="form-group">
+        <select class="form-control" id="id_trabajador" name="id_trabajador" btn-default="" 
+                dropdown-toggle="" tabindex="-1">  
+          {% for trabajador in trabajadores %}
+            {% if trabajador.id == datos.getTrabajador().Id %}
+              <option value="{{ trabajador.id }}" selected>{{ trabajador.nombre }}</option> 
+            {% else %}
+              <option value="{{ trabajador.id }}">{{ trabajador.nombre }}</option> 
+            {% endif %}
+          {% endfor %}           
+        </select>
+        <label for="id_trabajador">Trabajador:</label>
+      </div> 
+      <div class="form-group">    
+        <textarea name="tarea" id="tarea" class="form-control" rows="3" placeholder="">{{ datos.tarea }}</textarea>
+        <label for="tarea">Tarea realizada:</label>     
+      </div>    
+      <div class="modal-footer">
+        <input class='btn btn-primary' type='submit' name="edit[btn]" value='Editar'>
+        </form>
+        <a href="{{ path('colli_trabajadores_control_delete', {id: datos.Id })}}" type="button" class="btn ink-reaction btn-danger">Eliminar</a>
+      </div>
+  </div>
+  <script>
+    $('.datepicker').datepicker({
+      format: 'dd-mm-yyyy',
+    });
+  </script>
+{% endblock %} 

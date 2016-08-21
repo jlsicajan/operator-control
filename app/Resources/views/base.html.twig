@@ -27,11 +27,11 @@
       <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/bootstrap-tagsinput/bootstrap-tagsinput.css')}}" />
       <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/typeahead/typeahead.css')}}" />
       <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/libs/dropzone/dropzone-theme.css')}}" />
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="../../assets/js/libs/utils/html5shiv.js?1403934957"></script>
-    <script type="text/javascript" src="../../assets/js/libs/utils/respond.min.js?1403934956"></script>
-    <![endif]-->
+      <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!--[if lt IE 9]>
+      <script type="text/javascript" src="../../assets/js/libs/utils/html5shiv.js?1403934957"></script>
+      <script type="text/javascript" src="../../assets/js/libs/utils/respond.min.js?1403934956"></script>
+      <![endif]-->
     {% endblock %}
     <!-- END STYLESHEETS -->
   </head>
@@ -220,7 +220,7 @@
               </a>
             </li><!--end /menu-li -->
             <!-- END LEVELS -->
-            
+
             <!-- BEGIN LEVELS -->
             <li>
               <a href = '{{ path('colli_control_trabajadores') }}'>
@@ -229,7 +229,7 @@
               </a>
             </li><!--end /menu-li -->
             <!-- END LEVELS -->
-            
+
             <!-- BEGIN LEVELS -->
             <li>
               <a href = '{{ path('colli_control_trabajadores_control') }}'>
@@ -531,6 +531,11 @@
     <script type="text/javascript" src="{{asset('assets/js/datatable/jquery.dataTables.min.js')}}"></script>
     <script type="text/javascript" src="{{asset('assets/js/bootstrap/bootstrap.js')}}"></script>
     <script type="text/javascript" src="{{asset('assets/js/libs/bootstrap-datepicker/bootstrap-datepicker.js')}}"></script>
+    <script>
+      $('.datepicker').datepicker({
+        format: 'dd-mm-yyyy'
+      });
+    </script>
     <!-- END JAVASCRIPT -->
 
   </body>

@@ -29,9 +29,9 @@
 			return;
 		}
 
-		$('#demo-date').datepicker({autoclose: true, todayHighlight: true});
+		$('#demo-date').datepicker({autoclose: true, todayHighlight: true, format: "dd/mm/yyyy", language: "es"});
 		$('#demo-date-month').datepicker({autoclose: true, todayHighlight: true, minViewMode: 1});
-		$('#demo-date-format').datepicker({autoclose: true, todayHighlight: true, format: "yyyy/mm/dd"});
+		$('#demo-date-format').datepicker({autoclose: true, todayHighlight: true, format: "yyyy/mm/dd", language: "es"});
 		$('#demo-date-range').datepicker({todayHighlight: true});
 		$('#demo-date-inline').datepicker({todayHighlight: true});
 	};

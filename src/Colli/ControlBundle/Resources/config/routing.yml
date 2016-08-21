@@ -93,6 +93,14 @@ colli_control_manejo_bodega_delete:
 colli_control_trabajador_delete:
     path:     /trabajadores/eliminar/{id}
     defaults: { _controller: ColliControlBundle:Trabajadores:eliminar }
+
+colli_trabajadores_control_edit:
+    path:     /control/trabajadores/editar/{id}
+    defaults: { _controller: ColliControlBundle:TrabajadoresControl:editTrabajador }
+
+colli_trabajadores_control_delete:
+    path:     /control/trabajadores/eliminar/{id}
+    defaults: { _controller: ColliControlBundle:TrabajadoresControl:eliminar }
 #--------------------------------------- change --------------------------------
 colli_control_canton_change:
     path:     /canton/change/{pk}
@@ -121,6 +129,10 @@ colli_control_manejo_bodega_change:
 colli_control_trabajador_change:
     path:     /trabajadores/change/{id}
     defaults: { _controller: ColliControlBundle:Trabajadores:change }
+
+colli_trabajador_control_change:
+    path:     /control/trabajadores/change/{id}
+    defaults: { _controller: ColliControlBundle:TrabajadoresControl:change }
 #----------------------------------- reporte canton ----------------------------
 colli_control_canton_pdf:
     path:     /canton/reporte/pdf
