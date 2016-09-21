@@ -1,1 +1,152 @@
-:D
+{% extends "::base.html.twig" %}
+
+{% block title %}Manejo de bodega{% endblock %}
+{% block body %}
+  <div class="row">
+    {{ form_start(form, {'attr': {'class': 'form'}}) }}	
+    <div class="col-md-12">
+      <div class="card ">
+        <div class="row">
+          <div class="card-head">
+            <header class="text-primary">Ingresar movimiento</header>
+          </div>
+          <div class="card-body height-13">
+            <div class="table-responsive">	
+              <div class="col-lg-4">
+                <div class="form-group">
+                  {{ form_widget(form.canton)}}
+                  <label for="canton">Canton</label>
+                </div>
+                <div class="form-group">
+                  {{ form_widget(form.sector)}}
+                  <label for="sector">Sector</label>
+                </div>
+                <div class="form-group">
+                  {{ form_widget(form.cantidad_camionadas_sector)}}
+                  <label for="cantidad_camionadas_sector">cantidad_camionadas_sector</label>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  {{ form_widget(form.precio_diesel_sector)}}
+                  <label for="precio_diesel_sector">precio_diesel_sector</label>
+                </div>
+                <div class="form-group">
+                  {{ form_widget(form.galones_diesel_sector)}}
+                  <label for="galones_diesel_sector">galones_diesel_sector</label>
+                </div>
+                <div class="form-group">
+                  {{ form_widget(form.dias_cantidad_sector)}}
+                  <label for="dias_cantidad_sector">dias_cantidad_sector</label>
+                </div>
+                <div class="form-group">
+                  {{ form_widget(form.ingresar)}}
+                </div>
+              </div>									
+              <div class="col-lg-4">
+                <div class="form-group">
+                  {{ form_widget(form.horas_diarias_sector)}}
+                  <label for="horas_diarias_sector">horas_diarias_sector</label>
+                </div>
+                <div class="form-group">
+                  {{ form_widget(form.horas_total_sector)}}
+                  <label for="horas_total_sector">horas_total_sector</label>
+                </div>
+                <div class="form-group">
+                  {{ form_widget(form.grosor_balasto_sector)}}
+                  <label for="grosor_balasto_sector">grosor_balasto_sector</label>
+                </div>
+                <div class="form-group">
+                  <label class="checkbox-inline checkbox-styled checkbox-danger">
+                    {{ form_widget(form.reparacion_sector)}}<span>Danger</span>
+                  </label>
+                </div>
+              </div>									
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='modal fade custom-width col-md-6' id ='modal'data-backdrop="static">
+        <div class="modal-dialog" style='width: 90%'>
+          <div class="modal-content">
+            Cargando Informacion ...
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div id="reparaciones_div" class="col-lg-4">
+        <div class="card">
+          <div class="card-head">
+            <header class="text-primary">Reparaciones</header>
+          </div>
+          <div class="card-body height-4">
+            <div class="table-responsive">	
+              <div class="col-lg-4">
+                <div class="form-group">
+                  {{ form_widget(form.maquinaria)}}
+                  <label for="maquinaria">Maquinaria</label>
+                </div>
+                <div class="form-group">
+                  {{ form_widget(form.bodega)}}
+                  <label for="bodega">Bodega</label>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="form-group">
+                  {{ form_widget(form.observaciones)}}
+                  <label for="observaciones">Observaciones</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-head">
+            <header class="text-primary">Imprimir reportes</header>
+          </div>
+          <div class="card-body height-4">
+            <a 
+              class="btn btn-block ink-reaction btn-success"
+              href="{{ path('colli_control_manejo_bodega_pdf')}}">
+              <i class="md md-receipt">
+              </i>
+              GENERAR EXCEL
+            </a>
+            <a 
+              class="btn btn-block ink-reaction btn-danger"
+              href="{{ path('colli_control_manejo_bodega_pdf')}}">
+              <i class="glyphicon glyphicon-th-list">
+              </i>
+              GENERAR PDF
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ form_end(form)}}
+    <div class='modal fade custom-width col-md-6' id ='modal'data-backdrop="static">
+      <div class="modal-dialog" style='width: 90%'>
+        <div class="modal-content">
+          Cargando Informacion ...
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block extra_script %}
+  <script>
+    $(document).ready(function () {
+      $("#reparaciones_div").hide();
+      $("#reparacion_sector").change(function () {
+        if ($(this).is(":checked")) {
+          $("#reparaciones_div").show('fast');
+        } else {
+          $("#reparaciones_div").hide('fast');
+        }
+      });
+    });
+  </script>
+{% endblock %}

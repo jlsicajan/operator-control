@@ -11,7 +11,7 @@
 
     <!-- BEGIN STYLESHEETS -->
     {% block stylesheets %}
-      <link href='http://fonts.googleapis.com/css?family=Roboto:300italic,400italic,300,400,500,700,900' rel='stylesheet' type='text/css'/>
+      <link rel='stylesheet' type='text/css' href="{{asset('assets/css/fonts_google_apis.css')}}"/>
       <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/bootstrap.css')}}" />
       <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/materialadmin.css')}}" />
       <link type="text/css" rel="stylesheet" href="{{asset('assets/css/theme-default/font-awesome.min.css')}}" />
@@ -525,7 +525,8 @@
     <script src="../../assets/js/core/source/AppVendor.js"></script>
     <script src="../../assets/js/core/demo/Demo.js"></script>
     <script src="../../assets/js/core/demo/DemoDashboard.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    {#    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>#}
+    <script src="{{asset('assets/js/ajax_google_apis.js')}}"></script>
     <script src="{{asset('assets/js/colliscript.js')}}" ></script>
     <script type="text/javascript" src="{{asset('assets/js/datatable/jquery.dataTables.js')}}"></script>
     <script type="text/javascript" src="{{asset('assets/js/datatable/jquery.dataTables.min.js')}}"></script>
@@ -536,6 +537,8 @@
         format: 'dd-mm-yyyy'
       });
     </script>
+    {% block extra_script %}
+    {% endblock %}
     <!-- END JAVASCRIPT -->
 
   </body>

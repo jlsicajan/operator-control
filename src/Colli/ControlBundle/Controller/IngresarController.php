@@ -2,34 +2,30 @@
 
 namespace Colli\ControlBundle\Controller;
 
-use Colli\ControlBundle\Form\Type\bodegaType;
-use Colli\ControlBundle\Form\Type\manejoBodegaType;
-use Colli\ControlBundle\Model\BodegaPeer;
-use Colli\ControlBundle\Model\BodegaQuery;
-use Colli\ControlBundle\Model\ControlBodegaPeer;
+use Colli\ControlBundle\Form\Type\ingresoType;
+use Colli\ControlBundle\Model\ControlPeer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class IngresarController extends Controller {
 
   public function ingresoAction(Request $request) {
-//    $form = $this->createForm(new manejoBodegaType());
-//    if ($request->isMethod("POST")) {
-//      $form->handleRequest($request);
-//      if ($form->isValid()) {
-//        $valores = $form->getData();
-//        print_r($valores);
-//        die();
-////        BodegaQuery::write($valores['descripcion'], $valores['cantidad'], $valores['precio']);
-////        return $this->redirect($this->generateUrl('colli_control_bodega'));
-//      } else {
-//        $this->addFlash('Error', $form->getErrorsAsString());
-//      }
-//    }
-//    $bodega = ControlBodegaPeer::getListado(null);
-//    $context = array('bodega' => $bodega, 'form' => $form->createView());
-    return $this->render('ColliControlBundle:General:ingreso_datos.html.twig');
+    $form = $this->createForm(new ingresoType());
+    if ($request->isMethod("POST")) {
+      $form->handleRequest($request);
+      if ($form->isValid()) {
+        $valores = $form->getData();
+        print_r($valores);
+        die();
+//        BodegaQuery::write($valores['descripcion'], $valores['cantidad'], $valores['precio']);
+//        return $this->redirect($this->generateUrl('colli_control_bodega'));
+      } else {
+        $this->addFlash('Error', $form->getErrorsAsString());
+      }
+    }
+    $datos_ingresados = ControlPeer::getListado(null);
+    $context = array('datos_ingresados' => $datos_ingresados, 'form' => $form->createView());
+    return $this->render('ColliControlBundle:General:ingreso_datos.html.twig', $context);
   }
 
 //
